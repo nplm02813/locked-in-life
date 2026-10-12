@@ -1,282 +1,1169 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="dark">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101110">
-<title>LOCKED IN — Life OS v2</title>
-<style>
-:root {
-  color-scheme: light dark;
-  --bg: light-dark(#e9e7df, #101110);
-  --panel: light-dark(#f8f7f1, #181a18);
-  --panel2: light-dark(#deded5, #222522);
-  --text: light-dark(#20221f, #e9e8df);
-  --muted: light-dark(#686c63, #9a9d92);
-  --line: light-dark(#cbcfc4, #373a34);
-  --accent: light-dark(#a9442e, #e45a3f);
-  --accent2: light-dark(#3f4b3f, #b3c49a);
-  --accentInk: #fff8ef;
-  --danger: light-dark(#a12d2d, #ff8b77);
-  --shadow: 0 12px 32px rgba(0,0,0,.12);
-}
-* { box-sizing:border-box; }
-body { margin:0; background:var(--bg); color:var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
-button,input,select { font:inherit; }
-button { cursor:pointer; }
-#app { min-height:100vh; background:var(--bg); }
-.shell { max-width:1220px; margin:0 auto; padding:22px 18px 60px; }
-.topbar { display:flex; justify-content:space-between; align-items:center; gap:15px; padding-bottom:16px; border-bottom:2px solid var(--text); }
-.brand { display:flex; gap:12px; align-items:center; }
-.mark { display:grid; place-items:center; width:44px; height:44px; background:var(--accent); color:var(--accentInk); font-weight:1000; font-size:17px; transform:rotate(-3deg); box-shadow:4px 4px 0 var(--text); }
-.eyebrow { font-size:10px; text-transform:uppercase; letter-spacing:.17em; color:var(--muted); font-weight:900; }
-h1 { font-size:15px; letter-spacing:.1em; margin:4px 0 0; }
-.top-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-button { border:1px solid var(--line); background:var(--panel); color:var(--text); padding:10px 12px; border-radius:3px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; }
-button:hover { border-color:var(--accent); }
-button.primary { background:var(--accent); color:var(--accentInk); border-color:var(--accent); box-shadow:3px 3px 0 var(--text); }
-button.small { padding:8px 10px; }
-.hero { display:grid; grid-template-columns:1.4fr .9fr; gap:16px; margin:20px 0 22px; }
-.hero-main { background:var(--panel); border:1px solid var(--line); padding:25px; position:relative; overflow:hidden; box-shadow:var(--shadow); }
-.hero-main:after { content:"NO ZERO DAYS"; position:absolute; right:-14px; bottom:5px; font-size:clamp(24px,4vw,54px); font-weight:1000; letter-spacing:-.09em; color:var(--panel2); transform:rotate(-7deg); white-space:nowrap; pointer-events:none; }
-.hero-main h2 { position:relative; z-index:1; font-size:clamp(32px,5vw,56px); line-height:.98; letter-spacing:-.09em; margin:16px 0; max-width:650px; text-transform:uppercase; }
-.hero-main p { position:relative; z-index:1; max-width:570px; color:var(--muted); font-size:13px; line-height:1.7; }
-.hero-main .primary { position:relative; z-index:1; margin-top:9px; }
-.stats { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
-.stat { border:1px solid var(--line); background:var(--panel); padding:15px; min-height:114px; }
-.num { font-size:31px; letter-spacing:-.09em; font-weight:1000; margin:11px 0 3px; }
-.label { font-size:10px; color:var(--muted); }
-.progress { height:5px; background:var(--panel2); margin-top:12px; overflow:hidden; }
-.progress span { display:block; height:100%; width:0; background:var(--accent); transition:width .2s; }
-.section-head { display:flex; justify-content:space-between; align-items:end; gap:12px; margin:28px 0 11px; }
-.section-head h3 { margin:0; font-size:16px; letter-spacing:-.04em; text-transform:uppercase; }
-.section-head p { margin:5px 0 0; font-size:11px; line-height:1.5; color:var(--muted); }
-.grid { display:grid; grid-template-columns:1.15fr .85fr; gap:16px; align-items:start; }
-.card { background:var(--panel); border:1px solid var(--line); padding:18px; box-shadow:0 5px 0 color-mix(in srgb,var(--text) 10%,transparent); }
-.card h3 { margin:0 0 6px; font-size:14px; text-transform:uppercase; letter-spacing:.03em; }
-.card-sub { margin:0 0 15px; font-size:11px; color:var(--muted); line-height:1.6; }
-.mission-list { display:grid; gap:8px; }
-.mission { display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); padding:12px; background:var(--bg); }
-.mission.done { border-color:var(--accent2); background:color-mix(in srgb,var(--accent2) 12%,var(--bg)); }
-.mission input { accent-color:var(--accent); width:17px; height:17px; margin:2px 0 0; flex-shrink:0; }
-.mission-copy { flex:1; }
-.mission-title { font-size:12px; font-weight:1000; text-transform:uppercase; }
-.mission-desc { font-size:10px; color:var(--muted); line-height:1.5; margin-top:4px; }
-.xp { color:var(--accent); font-size:10px; font-weight:1000; white-space:nowrap; }
-.domain-list { display:grid; gap:14px; }
-.domain-row { display:grid; grid-template-columns:1fr auto; gap:6px; }
-.domain-row strong { font-size:11px; text-transform:uppercase; }
-.domain-row span { color:var(--muted); font-size:10px; }
-.domain-row .progress { grid-column:1 / -1; margin-top:0; }
-.challenge-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; }
-.challenge { border:1px solid var(--line); padding:13px; background:var(--bg); }
-.challenge .emoji { font-size:20px; }
-.challenge strong { display:block; font-size:11px; margin:8px 0 5px; text-transform:uppercase; }
-.challenge p { color:var(--muted); font-size:10px; line-height:1.55; min-height:46px; margin:0; }
-.challenge button { width:100%; margin-top:10px; font-size:9px; padding:8px 5px; }
-.fields { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; }
-.field { display:grid; gap:6px; }
-.field label { font-size:10px; color:var(--muted); font-weight:900; }
-input[type="number"] { width:100%; padding:10px; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:0; }
-.money-summary { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:13px; background:var(--panel2); margin-top:12px; }
-.money-summary strong { font-size:20px; }
-.money-summary small { color:var(--muted); font-size:10px; display:block; margin-top:4px; }
-.review-list { display:grid; gap:10px; }
-.review-item { display:flex; gap:9px; font-size:11px; line-height:1.5; align-items:flex-start; }
-.review-item input { accent-color:var(--accent); margin-top:2px; }
-.quote { border-left:3px solid var(--accent); padding:10px 0 10px 13px; margin-top:15px; font-size:11px; line-height:1.7; color:var(--muted); }
-.protocol { border:1px solid var(--accent); background:color-mix(in srgb,var(--accent) 8%,var(--panel)); padding:14px; margin-top:12px; }
-.protocol strong { font-size:11px; text-transform:uppercase; }
-.protocol p { color:var(--muted); font-size:11px; line-height:1.65; margin:7px 0 0; }
-.footer { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:26px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:9px; letter-spacing:.04em; }
-.toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--text); color:var(--bg); padding:11px 15px; font-size:11px; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity .2s; max-width:90vw; text-align:center; z-index:5; }
-.toast.show { opacity:1; }
-@media(max-width:820px) { .hero,.grid { grid-template-columns:1fr; } .challenge-grid { grid-template-columns:1fr; } .challenge p { min-height:0; } .fields { grid-template-columns:1fr 1fr; } }
-@media(max-width:500px) { .shell { padding:14px 10px 38px; } .topbar { align-items:flex-start; } .top-actions { max-width:145px; } .hero-main { padding:19px; } .hero-main h2 { font-size:38px; } .stats { gap:7px; } .stat { padding:11px; min-height:100px; } .num { font-size:26px; } .section-head { align-items:flex-start; flex-direction:column; } .fields { grid-template-columns:1fr 1fr; } }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOCKED IN — LIFE OS v2.1</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons & Canvas Confetti -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Google Fonts: Syne, Space Grotesk & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@500;700;900&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            heading: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            cyber: {
+              void: '#06080d',
+              panel: '#0d111a',
+              card: '#131926',
+              border: '#1f2a3e',
+              glow: '#00ff87',
+              cyan: '#00f0ff',
+              crimson: '#ff0055',
+              gold: '#ffb700',
+              purple: '#8b5cf6',
+              text: '#e6edf3',
+              muted: '#62728d'
+            }
+          },
+          boxShadow: {
+            'neon-glow': '0 0 25px rgba(0, 255, 135, 0.3)',
+            'neon-cyan': '0 0 25px rgba(0, 240, 255, 0.3)',
+            'neon-crimson': '0 0 25px rgba(ff, 0, 85, 0.3)',
+            'hud-card': '0 8px 32px 0 rgba(0, 0, 0, 0.6)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #06080d;
+      color: #e6edf3;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 30%, rgba(0, 255, 135, 0.05) 0%, transparent 50%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+      background-attachment: fixed;
+    }
+
+    /* Ambient Scanline Effect */
+    .scanlines {
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 0, 0, 0.25) 50%,
+        rgba(0, 0, 0, 0.25)
+      );
+      background-size: 100% 4px;
+    }
+
+    /* Custom tactical scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #06080d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1f2a3e;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00ff87;
+    }
+
+    /* Floating XP Indicator Animation */
+    @keyframes xpFloatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); filter: drop-shadow(0 0 10px #00ff87); }
+      50% { opacity: 1; transform: translateY(-30px) scale(1.25); filter: drop-shadow(0 0 20px #00f0ff); }
+      100% { opacity: 0; transform: translateY(-55px) scale(0.9); }
+    }
+    .animate-xp-float {
+      animation: xpFloatUp 1.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+      pointer-events: none;
+    }
+
+    /* Progress Shimmer */
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .shimmer-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    /* Tactical HUD Corner Cutout */
+    .hud-corner {
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .hud-border {
+      position: relative;
+    }
+    .hud-border::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px;
+      width: 10px; height: 10px;
+      border-top: 2px solid #00ff87;
+      border-left: 2px solid #00ff87;
+    }
+    .hud-border::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; right: -1px;
+      width: 10px; height: 10px;
+      border-bottom: 2px solid #00f0ff;
+      border-right: 2px solid #00f0ff;
+    }
+  </style>
 </head>
-<body>
-<div id="app">
-<main class="shell">
-  <header class="topbar">
-    <div class="brand"><div class="mark">LI//</div><div><div class="eyebrow">Personal field system / v2</div><h1>LOCKED IN — LIFE OS</h1></div></div>
-    <div class="top-actions"><button class="small" id="exportBtn">Export backup</button><button class="small" id="resetBtn">Reset data</button></div>
+<body class="font-heading antialiased min-h-screen flex flex-col justify-between selection:bg-cyber-glow selection:text-black">
+
+  <!-- Floating XP Animation Layer -->
+  <div id="xp-float-layer" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
+
+  <header class="border-b border-cyber-border/80 bg-cyber-panel/80 backdrop-blur-xl sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Brand & Online Indicator -->
+      <div class="flex items-center space-x-3.5">
+        <div class="relative flex items-center justify-center">
+          <div class="h-10 w-10 rounded-lg border border-cyber-glow/50 bg-cyber-glow/10 flex items-center justify-center text-cyber-glow font-display font-black text-xl shadow-neon-glow">
+            <i class="fa-solid fa-cube"></i>
+          </div>
+          <span class="absolute -top-1 -right-1 flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyber-glow opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-cyber-glow"></span>
+          </span>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-display font-black text-xl tracking-wider text-white">LOCKED IN</h1>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-cyber-cyan/10 border border-cyber-cyan/40 text-cyber-cyan font-mono font-bold tracking-widest">LIFE OS // v2.1</span>
+          </div>
+          <p class="text-xs text-cyber-muted font-mono tracking-tight flex items-center gap-1.5">
+            <span class="text-cyber-glow">●</span> SYSTEM ONLINE // BUILD THE LIFE, DON'T ESCAPE IT
+          </p>
+        </div>
+      </div>
+
+      <!-- Rank Badge & Quick Controls -->
+      <div class="flex items-center gap-4 sm:gap-6 font-mono">
+        
+        <!-- Level & XP Counter -->
+        <div class="bg-cyber-card border border-cyber-border/80 rounded-xl p-2.5 px-4 flex items-center gap-4 shadow-hud-card">
+          <div class="text-center">
+            <span class="text-[9px] uppercase tracking-widest text-cyber-muted block">RANK TITLE</span>
+            <span id="user-tier" class="font-display font-bold text-cyber-cyan text-sm tracking-wide">RECRUIT</span>
+          </div>
+          <div class="h-7 w-px bg-cyber-border"></div>
+          <div>
+            <div class="flex justify-between items-center text-xs font-bold text-white mb-1">
+              <span>LVL <span id="user-level" class="text-cyber-glow font-black text-sm">01</span></span>
+              <span class="text-cyber-muted text-[10px] ml-4"><span id="user-xp">0</span> / <span id="max-xp">100</span> XP</span>
+            </div>
+            <div class="w-32 sm:w-40 bg-cyber-void rounded-full h-2 overflow-hidden border border-cyber-border relative">
+              <div id="xp-bar" class="bg-gradient-to-r from-cyber-cyan via-cyber-glow to-cyber-glow h-full transition-all duration-500 shimmer-bar" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Streak Flame -->
+        <div class="bg-cyber-card border border-cyber-border/80 rounded-xl p-2.5 px-4 text-center shadow-hud-card">
+          <span class="text-[9px] uppercase tracking-widest text-cyber-muted block">STREAK</span>
+          <div class="flex items-center justify-center gap-1.5 text-cyber-gold font-black">
+            <i class="fa-solid fa-fire text-base animate-pulse"></i>
+            <span id="user-streak" class="text-base">0</span> <span class="text-[10px] text-cyber-muted">DAYS</span>
+          </div>
+        </div>
+
+        <!-- System Controls -->
+        <div class="flex items-center gap-2">
+          <button onclick="openBackupModal()" class="p-2.5 bg-cyber-card border border-cyber-border hover:border-cyber-cyan hover:text-cyber-cyan text-cyber-text rounded-lg text-xs transition-all shadow-hud-card" title="Backup / Restore System Data">
+            <i class="fa-solid fa-database"></i>
+          </button>
+          <button onclick="triggerResetProtocol()" class="px-3 py-2 bg-cyber-crimson/10 border border-cyber-crimson/50 hover:bg-cyber-crimson/20 text-cyber-crimson rounded-lg text-xs font-bold transition-all shadow-neon-crimson flex items-center gap-1.5" title="Start 10-Min Emergency Reset">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span class="hidden md:inline">10-MIN RESET</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
   </header>
 
-  <section class="hero">
-    <div class="hero-main">
-      <div class="eyebrow" id="todayLabel">FIELD REPORT / TODAY</div>
-      <h2>Build the life.<br>Don't escape it.</h2>
-      <p>Adaptive standards. No perfection theater. Train your body, build your freedom, sharpen your craft, and stay present for the actual experience of being alive.</p>
-      <button class="primary" id="focusBtn">Begin today's run ↗</button>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
+
+    <!-- Loadout Difficulty Bar -->
+    <div class="bg-cyber-panel/90 border border-cyber-border/80 rounded-2xl p-4 hud-border backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-4 shadow-hud-card">
+      <div class="w-full md:w-auto">
+        <label class="block text-[10px] font-mono uppercase tracking-widest text-cyber-muted mb-2">
+          <i class="fa-solid fa-sliders text-cyber-glow mr-1"></i> ACTIVE ADAPTIVE LOADOUT
+        </label>
+        <div class="grid grid-cols-3 gap-2.5 w-full sm:w-96 font-mono">
+          <button onclick="setLoadout('low')" id="btn-loadout-low" class="loadout-btn px-3 py-2 rounded-xl border text-xs transition-all text-center border-cyber-border bg-cyber-card text-cyber-muted hover:border-cyber-muted">
+            <div class="font-bold text-[11px]">LOW ENERGY</div>
+            <div class="text-[9px] opacity-70">Min Wins (50%)</div>
+          </button>
+
+          <button onclick="setLoadout('standard')" id="btn-loadout-standard" class="loadout-btn px-3 py-2 rounded-xl border text-xs transition-all text-center border-cyber-glow bg-cyber-glow/10 text-cyber-glow shadow-neon-glow font-bold">
+            <div class="font-bold text-[11px]">STANDARD</div>
+            <div class="text-[9px] opacity-70">Balanced (100%)</div>
+          </button>
+
+          <button onclick="setLoadout('push')" id="btn-loadout-push" class="loadout-btn px-3 py-2 rounded-xl border text-xs transition-all text-center border-cyber-border bg-cyber-card text-cyber-muted hover:border-cyber-muted">
+            <div class="font-bold text-[11px]">PUSH DAY</div>
+            <div class="text-[9px] opacity-70">Max Effort (+50%)</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-cyber-border/60 pt-3 md:pt-0 font-mono text-xs">
+        <div>
+          <span class="text-cyber-muted block text-[10px] tracking-wider uppercase">DAILY PROGRESS</span>
+          <span id="daily-progress-text" class="text-lg font-black text-cyber-glow">0 / 5 Directives</span>
+        </div>
+        <div class="h-8 w-px bg-cyber-border"></div>
+        <div>
+          <span class="text-cyber-muted block text-[10px] tracking-wider uppercase">DISCRETIONARY FUNDS</span>
+          <span id="summary-budget" class="text-lg font-black text-cyber-cyan">0.00 GEL</span>
+        </div>
+      </div>
     </div>
-    <div class="stats">
-      <div class="stat"><div class="eyebrow">Total XP</div><div class="num" id="totalXp">0</div><div class="label">Experience banked</div></div>
-      <div class="stat"><div class="eyebrow">Level</div><div class="num" id="level">01</div><div class="label" id="rank">Recruit</div><div class="progress"><span id="levelBar"></span></div></div>
-      <div class="stat"><div class="eyebrow">Active streak</div><div class="num" id="streak">0 <small>days</small></div><div class="label">One mission or reset per day</div></div>
-      <div class="stat"><div class="eyebrow">Today's run</div><div class="num" id="todayCount">0/6</div><div class="label">Missions completed</div><div class="progress"><span id="todayBar"></span></div></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- SECTION 01: Mission Board -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="font-display text-sm font-black tracking-widest uppercase flex items-center gap-2 text-white">
+            <i class="fa-solid fa-crosshair text-cyber-glow"></i> SECTION 01 // DAILY MISSION DIRECTIVES
+          </h2>
+          <button onclick="promptAddCustomMission()" class="text-xs font-mono text-cyber-cyan hover:underline flex items-center gap-1">
+            <i class="fa-solid fa-plus text-[10px]"></i> ADD CUSTOM MISSION
+          </button>
+        </div>
+
+        <div id="mission-board" class="space-y-3">
+          <!-- Dynamically Rendered Mission Cards -->
+        </div>
+      </div>
+
+      <!-- Side Column: Money Checkpoint & Side Quests -->
+      <div class="space-y-6">
+
+        <!-- SECTION 04: Money Checkpoint -->
+        <div class="bg-cyber-panel/90 border border-cyber-border/80 rounded-2xl p-5 space-y-4 shadow-hud-card">
+          <div class="flex items-center justify-between border-b border-cyber-border/80 pb-3">
+            <h3 class="font-display text-xs font-black uppercase text-cyber-glow tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-vault"></i> SECTION 04 // MONEY CHECKPOINT
+            </h3>
+            <select id="currency-select" onchange="changeCurrency(this.value)" class="text-[10px] font-mono bg-cyber-card border border-cyber-border rounded-md px-2 py-1 text-white focus:outline-none focus:border-cyber-glow">
+              <option value="GEL">GEL (₾)</option>
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+            </select>
+          </div>
+
+          <div class="bg-cyber-card p-4 rounded-xl border border-cyber-border/80 space-y-2 font-mono">
+            <div class="flex justify-between text-xs">
+              <span class="text-cyber-muted text-[11px]">DISCRETIONARY BUDGET</span>
+              <span id="finance-remaining" class="font-bold text-cyber-glow text-sm">0.00 GEL</span>
+            </div>
+            <div class="w-full bg-cyber-void h-2.5 rounded-full overflow-hidden border border-cyber-border/60">
+              <div id="finance-bar" class="bg-gradient-to-r from-cyber-cyan to-cyber-glow h-full transition-all duration-300" style="width: 100%"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-cyber-muted">
+              <span>Spent: <span id="finance-spent" class="text-cyber-crimson font-bold">0.00</span></span>
+              <span>Limit: <span id="finance-limit">500.00</span></span>
+            </div>
+          </div>
+
+          <form onsubmit="handleTransactionSubmit(event)" class="grid grid-cols-2 gap-2 font-mono text-xs">
+            <input type="text" id="tx-desc" placeholder="Label (e.g. Dinner, Coffee)" required class="col-span-2 bg-cyber-card border border-cyber-border/80 rounded-xl p-2.5 text-white placeholder-cyber-muted focus:border-cyber-glow focus:outline-none">
+            <input type="number" id="tx-amount" step="0.01" placeholder="Amount" required class="bg-cyber-card border border-cyber-border/80 rounded-xl p-2.5 text-white placeholder-cyber-muted focus:border-cyber-glow focus:outline-none">
+            <select id="tx-type" class="bg-cyber-card border border-cyber-border/80 rounded-xl p-2.5 text-white focus:border-cyber-glow focus:outline-none">
+              <option value="expense">Expense (-)</option>
+              <option value="income">Income (+)</option>
+            </select>
+            <button type="submit" class="col-span-2 py-2.5 bg-cyber-glow/10 border border-cyber-glow/40 hover:bg-cyber-glow/20 text-cyber-glow font-bold rounded-xl transition-all shadow-neon-glow">
+              <i class="fa-solid fa-plus mr-1"></i> LOG TRANSACTION
+            </button>
+          </form>
+
+          <div class="space-y-2 max-h-36 overflow-y-auto pr-1" id="tx-history"></div>
+        </div>
+
+        <!-- SECTION 03: Weekly Side Quests -->
+        <div class="bg-cyber-panel/90 border border-cyber-border/80 rounded-2xl p-5 space-y-4 shadow-hud-card">
+          <div class="flex items-center justify-between border-b border-cyber-border/80 pb-3">
+            <h3 class="font-display text-xs font-black uppercase text-cyber-cyan tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-compass"></i> SECTION 03 // SIDE QUESTS & MEMORIES
+            </h3>
+            <button onclick="promptAddQuest()" class="text-xs text-cyber-glow hover:underline font-mono">+ ADD QUEST</button>
+          </div>
+          <p class="text-xs text-cyber-muted font-mono">Offline memories & life experiences outside the daily grind.</p>
+          <div id="side-quest-list" class="space-y-2"></div>
+        </div>
+
+      </div>
+
     </div>
-  </section>
 
-  <div class="section-head"><div><h3>01 / Daily mission board</h3><p>Choose a realistic loadout based on energy and schedule. A small win counts.</p></div><div class="eyebrow" id="dateStamp"></div></div>
-  <section class="grid">
-    <div class="card">
-      <h3>Today's loadout</h3><p class="card-sub">Adaptive difficulty: choose your day type. XP rewards stay the same; the required effort changes.</p>
-      <div class="field" style="margin-bottom:12px"><label for="dayMode">MISSION INTENSITY</label><select id="dayMode" style="padding:10px;background:var(--bg);color:var(--text);border:1px solid var(--line)"><option value="standard">Standard day — normal plan</option><option value="low">Low-energy day — minimum viable wins</option><option value="push">Push day — extra focus, only if recovered</option></select></div>
-      <div class="protocol" id="modeProtocol"><strong>STANDARD ORDERS</strong><p>Complete a useful version of each mission. You do not need to max out every stat every day.</p></div>
-      <div class="mission-list" id="missions" style="margin-top:12px"></div>
-      <div class="quote">“You are allowed to have a hard day. You are not required to turn it into a hard week.”</div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- SECTION 02: Nightly Debrief / Evening Log -->
+      <div class="bg-cyber-panel/90 border border-cyber-glow/30 rounded-2xl p-6 space-y-5 shadow-hud-card hud-border">
+        <div class="flex items-center justify-between border-b border-cyber-border/80 pb-3">
+          <div>
+            <h2 class="font-display text-sm font-black tracking-widest uppercase text-cyber-glow flex items-center gap-2">
+              <i class="fa-solid fa-moon text-cyber-glow"></i> SECTION 02 // NIGHTLY DEBRIEF (BEFORE SLEEP)
+            </h2>
+            <p class="text-xs text-cyber-muted font-mono mt-0.5">End day with intent. Clear your head before sleep.</p>
+          </div>
+          <button onclick="saveNightlyDebrief(event)" class="px-4 py-2 bg-cyber-glow/10 border border-cyber-glow/40 hover:bg-cyber-glow/20 text-cyber-glow font-mono text-xs rounded-xl font-bold transition-all shadow-neon-glow flex items-center gap-1.5">
+            <i class="fa-solid fa-check-double"></i> SAVE & CLOSE (+100 XP)
+          </button>
+        </div>
+
+        <!-- Rating Dial (System Calibration) -->
+        <div class="flex items-center justify-between bg-cyber-card p-3.5 rounded-xl border border-cyber-border/80 font-mono text-xs">
+          <span class="text-cyber-muted uppercase text-[10px] tracking-wider">SYSTEM CALIBRATION (1-5):</span>
+          <div class="flex items-center gap-2" id="rating-stars">
+            <button onclick="setDayRating(1)" class="star-btn text-cyber-muted hover:text-cyber-gold text-base transition-all"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setDayRating(2)" class="star-btn text-cyber-muted hover:text-cyber-gold text-base transition-all"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setDayRating(3)" class="star-btn text-cyber-muted hover:text-cyber-gold text-base transition-all"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setDayRating(4)" class="star-btn text-cyber-muted hover:text-cyber-gold text-base transition-all"><i class="fa-solid fa-star"></i></button>
+            <button onclick="setDayRating(5)" class="star-btn text-cyber-muted hover:text-cyber-gold text-base transition-all"><i class="fa-solid fa-star"></i></button>
+          </div>
+        </div>
+
+        <div class="space-y-3.5 font-mono text-xs">
+          <div>
+            <label class="block text-cyber-glow mb-1 font-bold">1. What went well today? (Wins)</label>
+            <textarea id="debrief-wins" rows="2" placeholder="List 1-3 highlights or finished objectives..." class="w-full bg-cyber-card border border-cyber-border/80 rounded-xl p-3 text-white placeholder-cyber-muted focus:border-cyber-glow focus:outline-none"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-cyber-crimson mb-1 font-bold">2. Where was friction / slump?</label>
+            <textarea id="debrief-friction" rows="2" placeholder="Distractions, energy slumps, friction points..." class="w-full bg-cyber-card border border-cyber-border/80 rounded-xl p-3 text-white placeholder-cyber-muted focus:border-cyber-glow focus:outline-none"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-cyber-cyan mb-1 font-bold">3. What memory did I actually experience / gratitude?</label>
+            <textarea id="debrief-gratitude" rows="2" placeholder="A real moment, coffee, sunset, laugh, connection..." class="w-full bg-cyber-card border border-cyber-border/80 rounded-xl p-3 text-white placeholder-cyber-muted focus:border-cyber-glow focus:outline-none"></textarea>
+          </div>
+        </div>
+
+        <div class="border-t border-cyber-border/80 pt-3 flex items-center justify-between font-mono text-xs">
+          <span id="debrief-history-count" class="text-cyber-muted">0 entries in archive</span>
+          <button onclick="toggleDebriefHistoryModal()" class="text-cyber-cyan hover:underline flex items-center gap-1.5 font-bold">
+            <i class="fa-solid fa-clock-rotate-left"></i> VIEW DEBRIEF LOGS / HISTORY
+          </button>
+        </div>
+      </div>
+
+      <!-- SECTION 06: Weekly AAR & System Review -->
+      <div class="bg-cyber-panel/90 border border-cyber-border/80 rounded-2xl p-6 space-y-5 shadow-hud-card">
+        <div class="flex items-center justify-between border-b border-cyber-border/80 pb-3">
+          <div>
+            <h2 class="font-display text-sm font-black tracking-widest uppercase text-white flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-cyber-cyan"></i> SECTION 06 // WEEKLY AFTER-ACTION REVIEW (AAR)
+            </h2>
+            <p class="text-xs text-cyber-muted font-mono mt-0.5">Macro reflection & system parameter recalibration.</p>
+          </div>
+          <button onclick="saveAARNotes()" class="px-4 py-2 bg-cyber-cyan/10 border border-cyber-cyan/40 hover:bg-cyber-cyan/20 text-cyber-cyan font-mono text-xs rounded-xl font-bold transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-floppy-disk"></i> SAVE AAR
+          </button>
+        </div>
+
+        <div class="space-y-3.5 font-mono text-xs">
+          <div>
+            <label class="block text-cyber-glow mb-1 font-bold">1. Major Weekly Victories & Output</label>
+            <textarea id="aar-wins" rows="2.5" placeholder="Key projects, milestones reached, habits maintained..." class="w-full bg-cyber-card border border-cyber-border/80 rounded-xl p-3 text-white placeholder-cyber-muted focus:border-cyber-glow focus:outline-none"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-cyber-crimson mb-1 font-bold">2. System Bottlenecks & Traps</label>
+            <textarea id="aar-friction" rows="2.5" placeholder="Where did discipline falter? What patterns need fixing?" class="w-full bg-cyber-card border border-cyber-border/80 rounded-xl p-3 text-white placeholder-cyber-muted focus:border-cyber-glow focus:outline-none"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-cyber-cyan mb-1 font-bold">3. Next Week Recalibration & Focus</label>
+            <textarea id="aar-adjustments" rows="2.5" placeholder="Shift focus? Tweak loadouts? Change schedules?" class="w-full bg-cyber-card border border-cyber-border/80 rounded-xl p-3 text-white placeholder-cyber-muted focus:border-cyber-glow focus:outline-none"></textarea>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div class="card">
-      <h3>Character stats</h3><p class="card-sub">Track the whole build. Every mission is one of five domains.</p>
-      <div class="domain-list" id="domains"></div>
-      <div class="protocol"><strong>Field rule / 01</strong><p>Discipline is keeping a promise that fits reality. If work, sleep, or recovery changes, adapt the mission — don't abandon the campaign.</p></div>
+
+  </main>
+
+  <footer class="border-t border-cyber-border/80 bg-cyber-panel/60 py-5 mt-10 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 text-center font-mono text-xs text-cyber-muted flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="font-display font-bold text-white tracking-wider">LOCKED IN — LIFE OS v2.1</span>
+        <span class="text-[10px] px-2 py-0.5 rounded bg-cyber-glow/10 border border-cyber-glow/30 text-cyber-glow">TACTICAL CYBERPUNK</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>STATUS: <span class="text-cyber-glow font-bold">SYSTEM ONLINE</span></span>
+        <span>•</span>
+        <button onclick="resetAllDataConfirmation()" class="text-cyber-crimson hover:underline">PURGE SYSTEM DATA</button>
+      </div>
     </div>
-  </section>
+  </footer>
 
-  <div class="section-head"><div><h3>02 / Weekly side quests</h3><p>Productivity isn't the whole game. Make memories on purpose.</p></div></div>
-  <section class="card"><div class="challenge-grid" id="challenges"></div></section>
+  <!-- MODAL: Nightly Debrief Archive Modal -->
+  <div id="debrief-history-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-cyber-panel border border-cyber-cyan/40 rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl font-mono hud-border">
+      <div class="flex items-center justify-between border-b border-cyber-border/80 pb-3">
+        <h3 class="text-sm font-bold uppercase text-cyber-cyan flex items-center gap-2">
+          <i class="fa-solid fa-clock-rotate-left"></i> NIGHTLY DEBRIEF LOG ARCHIVE
+        </h3>
+        <button onclick="toggleDebriefHistoryModal()" class="text-cyber-muted hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
 
-  <div class="section-head"><div><h3>03 / Money checkpoint</h3><p>Money is stored energy for your future choices. Track it without shame.</p></div></div>
-  <section class="card">
-    <div class="fields">
-      <div class="field"><label for="income">MONTHLY INCOME / GEL</label><input id="income" type="number" min="0" step="50" value="3000"></div>
-      <div class="field"><label for="savings">SAVED THIS MONTH / GEL</label><input id="savings" type="number" min="0" step="10" value="150"></div>
-      <div class="field"><label for="weeklyBudget">WEEKLY SOCIAL LIMIT / GEL</label><input id="weeklyBudget" type="number" min="0" step="10" value="80"></div>
-      <div class="field"><label for="socialSpent">SPENT THIS WEEK / GEL</label><input id="socialSpent" type="number" min="0" step="5" value="0"></div>
+      <div id="debrief-history-list" class="space-y-3 max-h-96 overflow-y-auto pr-2"></div>
+
+      <div class="text-right border-t border-cyber-border/80 pt-3">
+        <button onclick="toggleDebriefHistoryModal()" class="px-5 py-2 bg-cyber-card border border-cyber-border text-cyber-muted rounded-xl text-xs hover:text-white transition-all">CLOSE ARCHIVE</button>
+      </div>
     </div>
-    <div class="money-summary"><div><div class="eyebrow">Social budget remaining</div><small id="budgetHint">Set a limit after essentials and obligations.</small></div><strong id="budgetRemaining">80 GEL</strong></div>
-    <p class="card-sub" style="margin:11px 0 0">Defaults are examples, not advice. Set a realistic amount after essentials, debt, and obligations. A budget should create options, not guilt.</p>
-  </section>
+  </div>
 
-  <div class="section-head"><div><h3>04 / Missed-day reset protocol</h3><p>No shame spiral. No pretending it didn't happen. Return with one deliberate action.</p></div></div>
-  <section class="card">
-    <h3 id="resetTitle">No missed day detected</h3>
-    <p class="card-sub" id="resetDesc">If yesterday had no completed mission, use this short reset to re-enter the game. Your earned XP is never removed.</p>
-    <div class="protocol"><strong>THE 10-MINUTE RESET</strong><p>1. Drink water and take five slow breaths. 2. Tidy one small area or take a short walk. 3. Choose the single next useful action. 4. Complete the reset mission below. Then continue normally — no punishment workout, no extreme restriction, no doubling tomorrow's workload.</p></div>
-    <button class="primary" id="resetMissionBtn" style="margin-top:12px">Complete reset mission · +10 XP</button>
-  </section>
+  <!-- MODAL: System Backup & Import Modal -->
+  <div id="backup-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-cyber-panel border border-cyber-glow/40 rounded-2xl max-w-md w-full p-6 space-y-5 shadow-neon-glow font-mono hud-border">
+      <div class="flex items-center justify-between border-b border-cyber-border/80 pb-3">
+        <h3 class="text-sm font-bold uppercase text-cyber-glow flex items-center gap-2">
+          <i class="fa-solid fa-database"></i> SYSTEM DATA CONTROL
+        </h3>
+        <button onclick="closeBackupModal()" class="text-cyber-muted hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
 
-  <div class="section-head"><div><h3>05 / Weekly after-action review</h3><p>Honest debrief. Keep what works. Change what doesn't.</p></div><button class="small" id="reviewReset">Clear review</button></div>
-  <section class="card"><div class="review-list" id="review"></div><div class="quote">Debrief questions: Did I build my future? Did I actually enjoy my life? What stole time or money? What's the next useful move?</div></section>
+      <p class="text-xs text-cyber-muted">Backup your progress locally as a standard JSON file or restore from a previous save file.</p>
 
-  <footer class="footer"><span>LOCKED IN / LIFE OS v2.0</span><span>Local-only data · Export backups regularly · Not a replacement for professional advice</span></footer>
-</main>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-</div>
-<script>
-(() => {
-  const STORE = "locked-in-life-os-v2";
-  const missions = [
-    {id:"body", title:"Move your body", desc:{standard:"Training, mobility, a walk, or dance practice matched to your plan.",low:"Five minutes of mobility or a short walk. Minimum viable movement.",push:"Complete the planned session only if sleep and recovery support it."},xp:20,domain:"Body"},
-    {id:"future",title:"Invest in future freedom",desc:{standard:"Focused work on career, freelance outreach, portfolio, or a valuable skill.",low:"Ten focused minutes on one next step.",push:"A 45–60 minute deep-work block with distractions off."},xp:20,domain:"Freedom"},
-    {id:"money",title:"Make one money-smart choice",desc:{standard:"Track spending, save, cook in, or pause an impulse purchase.",low:"Record today's spending — no judgment.",push:"Review the week's expenses and take one concrete savings action."},xp:15,domain:"Freedom"},
-    {id:"craft",title:"Sharpen your craft",desc:{standard:"Coffee, filming, color grading, photography, or another meaningful skill.",low:"Practice or study for ten minutes.",push:"Finish a defined deliverable or publishable improvement."},xp:15,domain:"Craft"},
-    {id:"alive",title:"Experience your actual life",desc:{standard:"Connect, explore, create, read, dance, or spend time outdoors.",low:"Step outside, message a friend, or do one thing you enjoy.",push:"Plan or do a memorable experience without wrecking tomorrow."},xp:20,domain:"Life"},
-    {id:"close",title:"Close the day deliberately",desc:{standard:"Choose tomorrow's priority and protect your sleep.",low:"Write one next step and start winding down.",push:"Review the day, prepare tomorrow, and set a firm sleep cutoff."},xp:10,domain:"Discipline"}
-  ];
-  const domains=["Body","Freedom","Craft","Life","Discipline"];
-  const challenges=[
-    {id:"connection",emoji:"✳",title:"One connection",desc:"See a friend, have a real conversation, or meet someone new."},
-    {id:"adventure",emoji:"↗",title:"One adventure",desc:"Explore a new place, take your camera, hike, or try something unfamiliar."},
-    {id:"joy",emoji:"♫",title:"One pure joy",desc:"Dance, enjoy a film, make coffee, read, or do something just because."}
-  ];
-  const reviewItems=[
-    "I made measurable progress toward my future.",
-    "I did something enjoyable without sabotaging tomorrow.",
-    "I stayed aware of spending and made intentional choices.",
-    "I connected with someone or created a memory.",
-    "I adapted the plan when reality changed instead of quitting.",
-    "I identified one thing to improve next week."
-  ];
-  const today=()=>new Date().toLocaleDateString("en-CA");
-  const weekKey=(date=new Date())=>{const d=new Date(date);d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toLocaleDateString("en-CA");};
-  const yesterday=()=>{const d=new Date();d.setDate(d.getDate()-1);return d.toLocaleDateString("en-CA");};
-  const blank=()=>({days:{},weekly:{},review:{},money:{income:3000,savings:150,weeklyBudget:80,socialSpent:0,week:weekKey()},dayMode:"standard"});
-  let state;
-  try{state=JSON.parse(localStorage.getItem(STORE))||blank();}catch{state=blank();}
-  state.days ||= {}; state.weekly ||= {}; state.review ||= {}; state.money ||= blank().money; state.dayMode ||= "standard";
-  if(state.money.week!==weekKey()){state.money.week=weekKey();state.money.socialSpent=0;}
-  const save=()=>localStorage.setItem(STORE,JSON.stringify(state));
-  const dayData=(key=today())=>state.days[key]||(state.days[key]={done:[],reset:false});
-  const weekData=()=>state.weekly[weekKey()]||(state.weekly[weekKey()]={done:[]});
-  const reviewData=()=>state.review[weekKey()]||(state.review[weekKey()]=[]);
-  const dailyXP=()=>Object.values(state.days).reduce((sum,d)=>sum+missions.filter(m=>(d.done||[]).includes(m.id)).reduce((s,m)=>s+m.xp,0)+(d.reset?10:0),0);
-  const sideXP=()=>Object.values(state.weekly).reduce((sum,w)=>sum+(w.done||[]).length*25,0);
-  const totalXP=()=>dailyXP()+sideXP();
-  const domainXP=domain=>Object.values(state.days).reduce((sum,d)=>sum+missions.filter(m=>m.domain===domain&&(d.done||[]).includes(m.id)).reduce((s,m)=>s+m.xp,0),0);
-  const levelInfo=xp=>{const level=Math.floor(xp/150)+1;const ranks=["Recruit","Runner","Operator","Pathfinder","Specialist","Enforcer","Architect","Free Agent","Iron Mind"];return {level,within:xp%150,rank:ranks[Math.min(level-1,ranks.length-1)]||"Legend in Progress"};};
-  function hasWin(key){const d=state.days[key];return !!d&&((d.done||[]).length>0||d.reset===true);}
-  function streak(){let d=new Date(),count=0;if(!hasWin(today()))d.setDate(d.getDate()-1);while(hasWin(d.toLocaleDateString("en-CA"))){count++;d.setDate(d.getDate()-1);if(count>500)break;}return count;}
-  function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1900);}
-  function renderMissions(){
-    const d=dayData(),mode=state.dayMode;
-    const protocols={
-      standard:["STANDARD ORDERS","Complete a useful version of each mission. You do not need to max out every stat every day."],
-      low:["LOW-ENERGY PROTOCOL","Protect the streak of showing up, not the illusion of being superhuman. Small versions count; prioritize recovery."],
-      push:["PUSH-DAY PROTOCOL","Use this only when you're rested. Extra effort is optional, never a debt you owe after a missed day."]
+      <div class="bg-cyber-card p-4 rounded-xl border border-cyber-border/80 space-y-2">
+        <span class="text-xs text-white font-bold block">1. EXPORT LOCAL PROGRESS</span>
+        <button onclick="exportDataJSON()" class="w-full py-2.5 bg-cyber-glow text-black font-black rounded-xl text-xs hover:bg-cyber-glow/90 transition-all shadow-neon-glow flex items-center justify-center gap-2">
+          <i class="fa-solid fa-download"></i> DOWNLOAD BACKUP (JSON)
+        </button>
+      </div>
+
+      <div class="bg-cyber-card p-4 rounded-xl border border-cyber-border/80 space-y-2">
+        <span class="text-xs text-white font-bold block">2. RESTORE / IMPORT DATA</span>
+        <input type="file" id="import-file-input" accept=".json" class="hidden" onchange="importDataJSON(event)">
+        <button onclick="document.getElementById('import-file-input').click()" class="w-full py-2.5 bg-cyber-card border border-cyber-cyan text-cyber-cyan font-bold rounded-xl text-xs hover:bg-cyber-cyan/10 transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-upload"></i> SELECT JSON FILE TO RESTORE
+        </button>
+      </div>
+
+      <div class="text-right">
+        <button onclick="closeBackupModal()" class="px-5 py-2 bg-cyber-card border border-cyber-border text-cyber-muted rounded-xl text-xs hover:text-white transition-all">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SECTION 05 - 10-Minute Reset Protocol -->
+  <div id="reset-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-cyber-panel border border-cyber-crimson/60 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-neon-crimson font-mono hud-border">
+      <div class="flex items-center justify-between border-b border-cyber-border/80 pb-3">
+        <h3 class="text-sm font-bold uppercase text-cyber-crimson flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation animate-bounce"></i> SECTION 05 // 10-MINUTE RESET PROTOCOL
+        </h3>
+        <button onclick="closeResetProtocol()" class="text-cyber-muted hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="bg-cyber-crimson/10 border border-cyber-crimson/40 p-3.5 rounded-xl text-xs text-cyber-text">
+        <strong class="text-cyber-crimson block mb-1">NO SHAME SPIRAL RULE ACTIVE:</strong>
+        A missed day or broken streak does NOT wipe accumulated XP or progress. Complete these 4 quick actions to restore streak momentum instantly.
+      </div>
+
+      <div class="space-y-2.5" id="reset-checklist">
+        <label class="flex items-start gap-3 p-3 bg-cyber-card rounded-xl border border-cyber-border/80 hover:border-cyber-muted cursor-pointer">
+          <input type="checkbox" onchange="checkResetProgress()" class="mt-0.5 rounded border-cyber-border bg-cyber-void text-cyber-glow focus:ring-0">
+          <span class="text-xs text-white">1. Drink a large glass of clean water immediately.</span>
+        </label>
+        
+        <label class="flex items-start gap-3 p-3 bg-cyber-card rounded-xl border border-cyber-border/80 hover:border-cyber-muted cursor-pointer">
+          <input type="checkbox" onchange="checkResetProgress()" class="mt-0.5 rounded border-cyber-border bg-cyber-void text-cyber-glow focus:ring-0">
+          <span class="text-xs text-white">2. Clear or tidy your immediate physical desk / workspace (2 mins).</span>
+        </label>
+
+        <label class="flex items-start gap-3 p-3 bg-cyber-card rounded-xl border border-cyber-border/80 hover:border-cyber-muted cursor-pointer">
+          <input type="checkbox" onchange="checkResetProgress()" class="mt-0.5 rounded border-cyber-border bg-cyber-void text-cyber-glow focus:ring-0">
+          <span class="text-xs text-white">3. Switch Daily Loadout to <strong>LOW ENERGY</strong> for minimum viable win.</span>
+        </label>
+
+        <label class="flex items-start gap-3 p-3 bg-cyber-card rounded-xl border border-cyber-border/80 hover:border-cyber-muted cursor-pointer">
+          <input type="checkbox" onchange="checkResetProgress()" class="mt-0.5 rounded border-cyber-border bg-cyber-void text-cyber-glow focus:ring-0">
+          <span class="text-xs text-white">4. Select ONE micro-mission to finish right now.</span>
+        </label>
+      </div>
+
+      <div class="flex items-center justify-between border-t border-cyber-border/80 pt-4">
+        <span id="reset-status" class="text-xs text-cyber-muted">0/4 Completed</span>
+        <button onclick="finishResetProtocol()" id="reset-finish-btn" disabled class="px-5 py-2.5 bg-cyber-border text-cyber-muted font-bold rounded-xl text-xs transition-all opacity-50 cursor-not-allowed">
+          EXECUTE RESET
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DEFAULT_STATE = {
+      user: {
+        xp: 0,
+        level: 1,
+        streak: 1,
+        tier: 'RECRUIT',
+        loadout: 'standard'
+      },
+      missions: [
+        {
+          id: 'body',
+          domain: 'BODY / HEALTH',
+          icon: 'fa-dumbbell',
+          title: 'Physical Movement & Body Maintenance',
+          targets: { low: '20 Min Walk / Mobility', standard: '45 Min Workout + Stretch', push: '75 Min Heavy Session + Cardio' },
+          xp: 25,
+          completed: false
+        },
+        {
+          id: 'mind',
+          domain: 'MIND / FOCUS',
+          icon: 'fa-brain',
+          title: 'Focused Reading & Skill Study',
+          targets: { low: '5 Pages / 5 Min Audio', standard: '15 Pages Skill Reading', push: '30 Pages + Note Summarization' },
+          xp: 20,
+          completed: false
+        },
+        {
+          id: 'craft',
+          domain: 'CRAFT / WORK',
+          icon: 'fa-code',
+          title: 'Deep Focused Project Sprint',
+          targets: { low: '1x 25m Pomodoro Block', standard: '2x 45m Deep Work Blocks', push: '4x 45m Focused Sprint Blocks' },
+          xp: 30,
+          completed: false
+        },
+        {
+          id: 'freedom',
+          domain: 'FREEDOM / FINANCE',
+          icon: 'fa-vault',
+          title: 'Financial Tracking & Review',
+          targets: { low: 'Check Balances', standard: 'Log Daily Expenses in Checkpoint', push: 'Review Budgets + Investments' },
+          xp: 15,
+          completed: false
+        },
+        {
+          id: 'soul',
+          domain: 'SOUL / PRESENCE',
+          icon: 'fa-sun',
+          title: 'Digital Sunset & Mindful Presence',
+          targets: { low: 'Screens Off 15m Before Bed', standard: 'Screens Off 45m + Gratitude', push: 'No Phone in Room + Meditate' },
+          xp: 15,
+          completed: false
+        }
+      ],
+      sideQuests: [
+        { id: 'sq1', text: 'Offline coffee session with friend', completed: false },
+        { id: 'sq2', text: 'Sunset walk in a new neighborhood', completed: false }
+      ],
+      finance: {
+        currency: 'GEL',
+        limit: 500.00,
+        transactions: [
+          { id: 'tx1', desc: 'Specialty Coffee', amount: 8.50, type: 'expense', date: 'Today' }
+        ]
+      },
+      currentDebrief: {
+        rating: 4,
+        wins: '',
+        friction: '',
+        gratitude: ''
+      },
+      debriefHistory: [],
+      aar: {
+        wins: '',
+        friction: '',
+        adjustments: ''
+      }
     };
-    document.getElementById("modeProtocol").innerHTML=`<strong>${protocols[mode][0]}</strong><p>${protocols[mode][1]}</p>`;
-    document.getElementById("missions").innerHTML=missions.map(m=>`<label class="mission ${d.done.includes(m.id)?'done':''}"><input type="checkbox" data-mission="${m.id}" ${d.done.includes(m.id)?'checked':''}><div class="mission-copy"><div class="mission-title">${m.title}</div><div class="mission-desc">${m.desc[mode]}</div></div><div class="xp">+${m.xp} XP</div></label>`).join("");
-    document.querySelectorAll("[data-mission]").forEach(el=>el.addEventListener("change",()=>{
-      const id=el.dataset.mission,day=dayData(),m=missions.find(x=>x.id===id);
-      if(el.checked){if(!day.done.includes(id))day.done.push(id);toast(`+${m.xp} XP / ${m.domain}`);}else day.done=day.done.filter(x=>x!==id);
-      save();render();
-    }));
-  }
-  function renderDomains(){
-    const max=Math.max(100,...domains.map(domainXP));
-    document.getElementById("domains").innerHTML=domains.map(d=>{const xp=domainXP(d);return `<div class="domain-row"><strong>${d}</strong><span>${xp} XP</span><div class="progress"><span style="width:${Math.min(100,xp/max*100)}%"></span></div></div>`;}).join("");
-  }
-  function renderChallenges(){
-    const d=weekData();
-    document.getElementById("challenges").innerHTML=challenges.map(c=>`<div class="challenge"><div class="emoji">${c.emoji}</div><strong>${c.title}</strong><p>${c.desc}</p><button class="${d.done.includes(c.id)?'primary':''}" data-challenge="${c.id}">${d.done.includes(c.id)?'✓ Completed':'Mark complete / +25 XP'}</button></div>`).join("");
-    document.querySelectorAll("[data-challenge]").forEach(el=>el.addEventListener("click",()=>{const w=weekData(),id=el.dataset.challenge;if(w.done.includes(id))w.done=w.done.filter(x=>x!==id);else{w.done.push(id);toast("+25 XP / side quest complete");}save();render();}));
-  }
-  function renderMoney(){
-    const m=state.money;
-    ["income","savings","weeklyBudget","socialSpent"].forEach(id=>{const el=document.getElementById(id);if(document.activeElement!==el)el.value=m[id]??0;});
-    const remaining=Number(m.weeklyBudget||0)-Number(m.socialSpent||0);
-    document.getElementById("budgetRemaining").textContent=`${remaining.toLocaleString()} GEL`;
-    document.getElementById("budgetHint").textContent=remaining>=0?"Within your planned limit. Keep choosing intentionally.":"Over budget. Adjust the rest of the week without beating yourself up.";
-    document.getElementById("budgetRemaining").style.color=remaining<0?"var(--danger)":"var(--text)";
-  }
-  function renderReview(){
-    const done=reviewData();
-    document.getElementById("review").innerHTML=reviewItems.map((item,i)=>`<label class="review-item"><input type="checkbox" data-review="${i}" ${done.includes(i)?'checked':''}><span>${item}</span></label>`).join("");
-    document.querySelectorAll("[data-review]").forEach(el=>el.addEventListener("change",()=>{const arr=reviewData(),i=Number(el.dataset.review);if(el.checked){if(!arr.includes(i))arr.push(i);}else state.review[weekKey()]=arr.filter(x=>x!==i);save();renderReview();}));
-  }
-  function renderReset(){
-    const missed=!hasWin(yesterday()),d=dayData();
-    document.getElementById("resetTitle").textContent=missed?"Reset protocol available":"No missed day detected";
-    document.getElementById("resetDesc").textContent=missed?"Yesterday has no completed mission. No drama. Use a ten-minute reset to get moving again; yesterday's gap does not erase previous progress.":"You're not currently coming back from a blank day. Keep this protocol available for the next time life gets messy.";
-    const btn=document.getElementById("resetMissionBtn");
-    btn.disabled=!!d.reset;
-    btn.textContent=d.reset?"✓ Reset completed today":"Complete reset mission · +10 XP";
-  }
-  function render(){
-    const xp=totalXP(),info=levelInfo(xp),d=dayData(),done=d.done.length;
-    document.getElementById("todayLabel").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}).toUpperCase()+" / FIELD REPORT";
-    document.getElementById("dateStamp").textContent=today();
-    document.getElementById("totalXp").textContent=xp;
-    document.getElementById("level").textContent=String(info.level).padStart(2,"0");
-    document.getElementById("rank").textContent=info.rank;
-    document.getElementById("levelBar").style.width=(info.within/150*100)+"%";
-    document.getElementById("streak").innerHTML=`${streak()} <small style="font-size:10px">days</small>`;
-    document.getElementById("todayCount").textContent=`${done}/${missions.length}`;
-    document.getElementById("todayBar").style.width=(done/missions.length*100)+"%";
-    document.getElementById("dayMode").value=state.dayMode;
-    renderMissions();renderDomains();renderChallenges();renderMoney();renderReview();renderReset();
-  }
-  document.getElementById("dayMode").addEventListener("change",e=>{state.dayMode=e.target.value;save();renderMissions();});
-  ["income","savings","weeklyBudget","socialSpent"].forEach(id=>document.getElementById(id).addEventListener("change",e=>{state.money[id]=Math.max(0,Number(e.target.value)||0);save();renderMoney();}));
-  document.getElementById("focusBtn").addEventListener("click",()=>{document.getElementById("missions").scrollIntoView({behavior:"smooth",block:"center"});document.querySelector("#missions input:not(:checked)")?.focus({preventScroll:true});});
-  document.getElementById("resetMissionBtn").addEventListener("click",()=>{const d=dayData();if(d.reset)return;d.reset=true;save();render();toast("+10 XP / reset protocol complete");});
-  document.getElementById("reviewReset").addEventListener("click",()=>{if(confirm("Clear this week's reflection checkboxes? Your missions and XP remain saved.")){state.review[weekKey()]=[];save();renderReview();toast("Review cleared.");}});
-  document.getElementById("exportBtn").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="locked-in-life-os-v2-backup.json";a.click();URL.revokeObjectURL(url);toast("Backup exported.");});
-  document.getElementById("resetBtn").addEventListener("click",()=>{if(confirm("This permanently clears progress saved in this browser. Export a backup first if needed.")){state=blank();save();render();toast("New campaign started.");}});
-  save();render();
-})();
-</script>
+
+    let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+    function getLevelMaxXP(level) {
+      return 100 + (level - 1) * 50;
+    }
+
+    function getTierTitle(level) {
+      if (level < 3) return 'RECRUIT';
+      if (level < 6) return 'OPERATIVE';
+      if (level < 10) return 'COMMANDER';
+      if (level < 15) return 'VETERAN';
+      return 'LOCKED IN LEGEND';
+    }
+
+    function loadState() {
+      const saved = localStorage.getItem('locked_in_state_v2_1');
+      if (saved) {
+        try {
+          state = JSON.parse(saved);
+        } catch (e) {
+          console.error("Error loading saved state", e);
+        }
+      }
+      renderAll();
+    }
+
+    function saveState() {
+      localStorage.setItem('locked_in_state_v2_1', JSON.stringify(state));
+      renderHeaderStats();
+    }
+
+    function renderAll() {
+      renderHeaderStats();
+      renderLoadoutButtons();
+      renderMissions();
+      renderSideQuests();
+      renderFinance();
+      renderNightlyDebrief();
+      renderAAR();
+    }
+
+    function renderHeaderStats() {
+      const maxXP = getLevelMaxXP(state.user.level);
+      document.getElementById('user-level').innerText = state.user.level < 10 ? '0' + state.user.level : state.user.level;
+      document.getElementById('user-xp').innerText = state.user.xp;
+      document.getElementById('max-xp').innerText = maxXP;
+      document.getElementById('user-streak').innerText = state.user.streak;
+
+      state.user.tier = getTierTitle(state.user.level);
+      document.getElementById('user-tier').innerText = state.user.tier;
+
+      const pct = Math.min(100, Math.round((state.user.xp / maxXP) * 100));
+      document.getElementById('xp-bar').style.width = `${pct}%`;
+
+      const doneCount = state.missions.filter(m => m.completed).length;
+      document.getElementById('daily-progress-text').innerText = `${doneCount} / ${state.missions.length} Directives`;
+    }
+
+    function setLoadout(loadoutType) {
+      state.user.loadout = loadoutType;
+      saveState();
+      renderLoadoutButtons();
+      renderMissions();
+    }
+
+    function renderLoadoutButtons() {
+      ['low', 'standard', 'push'].forEach(type => {
+        const btn = document.getElementById(`btn-loadout-${type}`);
+        if (state.user.loadout === type) {
+          btn.className = "loadout-btn px-3 py-2 rounded-xl border text-xs font-mono transition-all text-center border-cyber-glow bg-cyber-glow/10 text-cyber-glow shadow-neon-glow font-bold";
+        } else {
+          btn.className = "loadout-btn px-3 py-2 rounded-xl border text-xs font-mono transition-all text-center border-cyber-border bg-cyber-card text-cyber-muted hover:border-cyber-muted";
+        }
+      });
+    }
+
+    function renderMissions() {
+      const container = document.getElementById('mission-board');
+      container.innerHTML = '';
+
+      state.missions.forEach((m) => {
+        const currentTarget = m.targets[state.user.loadout] || m.targets.standard;
+        const card = document.createElement('div');
+        
+        card.className = `p-4 rounded-2xl border transition-all duration-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
+          m.completed 
+            ? 'bg-cyber-card/40 border-cyber-glow/50 shadow-neon-glow' 
+            : 'bg-cyber-panel border-cyber-border/80 hover:border-cyber-muted shadow-hud-card'
+        }`;
+
+        card.innerHTML = `
+          <div class="flex items-start gap-3.5">
+            <button onclick="toggleMission('${m.id}', event)" class="mt-0.5 h-6 w-6 rounded-lg border flex items-center justify-center transition-all ${
+              m.completed 
+                ? 'bg-cyber-glow border-cyber-glow text-black font-black' 
+                : 'border-cyber-border bg-cyber-void hover:border-cyber-glow text-transparent'
+            }">
+              <i class="fa-solid fa-check text-xs"></i>
+            </button>
+
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded-md bg-cyber-card border border-cyber-border text-cyber-cyan font-bold">
+                  <i class="fa-solid ${m.icon} mr-1"></i> ${m.domain}
+                </span>
+                <span class="text-xs font-mono text-cyber-glow font-extrabold">+${m.xp} XP</span>
+              </div>
+              <h3 class="font-bold text-sm text-white ${m.completed ? 'line-through text-cyber-muted' : ''}">${m.title}</h3>
+              <p class="text-xs text-cyber-muted font-mono"><i class="fa-solid fa-crosshair mr-1 text-[10px]"></i> ${currentTarget}</p>
+            </div>
+          </div>
+
+          <div class="w-full sm:w-auto text-right">
+            <button onclick="toggleMission('${m.id}', event)" class="w-full sm:w-auto px-4 py-2 rounded-xl border text-xs font-mono transition-all font-bold ${
+              m.completed 
+                ? 'bg-cyber-glow/10 border-cyber-glow/50 text-cyber-glow shadow-neon-glow' 
+                : 'bg-cyber-card border-cyber-border text-cyber-muted hover:text-white hover:border-cyber-muted'
+            }">
+              ${m.completed ? '<i class="fa-solid fa-check mr-1"></i> LOGGED' : 'COMPLETE'}
+            </button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function promptAddCustomMission() {
+      const domain = prompt("Enter Domain (e.g. LEARNING, SKILL):", "CUSTOM / GOAL");
+      if (!domain) return;
+      const title = prompt("Enter Mission Title:");
+      if (!title) return;
+      const target = prompt("Enter Directive Target:", "Complete 1 focus session");
+      if (!target) return;
+
+      const newId = 'custom_' + Date.now();
+      state.missions.push({
+        id: newId,
+        domain: domain.toUpperCase(),
+        icon: 'fa-star',
+        title: title,
+        targets: { low: target, standard: target, push: target },
+        xp: 20,
+        completed: false
+      });
+
+      saveState();
+      renderMissions();
+    }
+
+    function toggleMission(missionId, event) {
+      const mission = state.missions.find(m => m.id === missionId);
+      if (!mission) return;
+
+      mission.completed = !mission.completed;
+
+      if (mission.completed) {
+        addXP(mission.xp, event);
+        checkAllMissionsCompleted();
+      } else {
+        state.user.xp = Math.max(0, state.user.xp - mission.xp);
+      }
+
+      saveState();
+      renderHeaderStats();
+      renderMissions();
+    }
+
+    function checkAllMissionsCompleted() {
+      const allDone = state.missions.every(m => m.completed);
+      if (allDone && window.confetti) {
+        confetti({
+          particleCount: 120,
+          spread: 90,
+          origin: { y: 0.5 },
+          colors: ['#00ff87', '#00f0ff', '#ff0055', '#ffb700']
+        });
+      }
+    }
+
+    function addXP(amount, event) {
+      state.user.xp += amount;
+      
+      if (event && event.clientX) {
+        showXPFloat(`+${amount} XP`, event.clientX, event.clientY);
+      } else {
+        showXPFloat(`+${amount} XP`, window.innerWidth / 2, window.innerHeight / 2);
+      }
+
+      let maxXP = getLevelMaxXP(state.user.level);
+      if (state.user.xp >= maxXP) {
+        state.user.xp -= maxXP;
+        state.user.level += 1;
+        triggerLevelUpCelebration();
+      }
+    }
+
+    function showXPFloat(text, x, y) {
+      const el = document.createElement('div');
+      el.className = 'fixed font-mono font-black text-cyber-glow text-xl pointer-events-none z-50 animate-xp-float';
+      el.innerText = text;
+      el.style.left = `${x - 20}px`;
+      el.style.top = `${y - 20}px`;
+      document.getElementById('xp-float-layer').appendChild(el);
+
+      setTimeout(() => el.remove(), 1200);
+    }
+
+    function triggerLevelUpCelebration() {
+      if (window.confetti) {
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#00ff87', '#00f0ff', '#ffffff']
+        });
+      }
+    }
+
+    function renderSideQuests() {
+      const container = document.getElementById('side-quest-list');
+      container.innerHTML = '';
+
+      state.sideQuests.forEach((sq) => {
+        const item = document.createElement('div');
+        item.className = "flex items-center justify-between p-2.5 rounded-xl bg-cyber-card border border-cyber-border/80 text-xs font-mono";
+        item.innerHTML = `
+          <label class="flex items-center gap-2.5 cursor-pointer">
+            <input type="checkbox" ${sq.completed ? 'checked' : ''} onchange="toggleSideQuest('${sq.id}')" class="rounded border-cyber-border bg-cyber-void text-cyber-glow focus:ring-0">
+            <span class="${sq.completed ? 'line-through text-cyber-muted' : 'text-cyber-text'}">${sq.text}</span>
+          </label>
+          <button onclick="deleteSideQuest('${sq.id}')" class="text-cyber-muted hover:text-cyber-crimson"><i class="fa-solid fa-trash text-[10px]"></i></button>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function toggleSideQuest(id) {
+      const sq = state.sideQuests.find(q => q.id === id);
+      if (sq) {
+        sq.completed = !sq.completed;
+        saveState();
+        renderSideQuests();
+      }
+    }
+
+    function promptAddQuest() {
+      const text = prompt("Enter new side quest (e.g., 'Try a new roast at locally owned coffee shop'):");
+      if (text && text.trim()) {
+        state.sideQuests.push({
+          id: 'sq_' + Date.now(),
+          text: text.trim(),
+          completed: false
+        });
+        saveState();
+        renderSideQuests();
+      }
+    }
+
+    function deleteSideQuest(id) {
+      state.sideQuests = state.sideQuests.filter(q => q.id !== id);
+      saveState();
+      renderSideQuests();
+    }
+
+    function changeCurrency(curr) {
+      state.finance.currency = curr;
+      saveState();
+      renderFinance();
+    }
+
+    function renderFinance() {
+      const curr = state.finance.currency || 'GEL';
+      document.getElementById('currency-select').value = curr;
+
+      const spent = state.finance.transactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + parseFloat(t.amount || 0), 0);
+
+      const income = state.finance.transactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + parseFloat(t.amount || 0), 0);
+
+      const netSpent = spent - income;
+      const remaining = state.finance.limit - netSpent;
+
+      document.getElementById('finance-spent').innerText = netSpent.toFixed(2);
+      document.getElementById('finance-limit').innerText = state.finance.limit.toFixed(2);
+      document.getElementById('finance-remaining').innerText = `${remaining.toFixed(2)} ${curr}`;
+      document.getElementById('summary-budget').innerText = `${remaining.toFixed(2)} ${curr}`;
+
+      const pct = Math.max(0, Math.min(100, (remaining / state.finance.limit) * 100));
+      document.getElementById('finance-bar').style.width = `${pct}%`;
+
+      const historyEl = document.getElementById('tx-history');
+      historyEl.innerHTML = '';
+
+      state.finance.transactions.forEach(tx => {
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-2 rounded-xl bg-cyber-card/80 text-[11px] font-mono border border-cyber-border/60";
+        row.innerHTML = `
+          <span class="text-cyber-muted truncate max-w-[140px]">${tx.desc}</span>
+          <span class="font-bold ${tx.type === 'expense' ? 'text-cyber-crimson' : 'text-cyber-glow'}">
+            ${tx.type === 'expense' ? '-' : '+'}${parseFloat(tx.amount).toFixed(2)} ${curr}
+          </span>
+        `;
+        historyEl.appendChild(row);
+      });
+    }
+
+    function handleTransactionSubmit(e) {
+      e.preventDefault();
+      const desc = document.getElementById('tx-desc').value.trim();
+      const amount = parseFloat(document.getElementById('tx-amount').value);
+      const type = document.getElementById('tx-type').value;
+
+      if (!desc || isNaN(amount) || amount <= 0) return;
+
+      state.finance.transactions.unshift({
+        id: 'tx_' + Date.now(),
+        desc: desc,
+        amount: amount,
+        type: type,
+        date: 'Today'
+      });
+
+      document.getElementById('tx-desc').value = '';
+      document.getElementById('tx-amount').value = '';
+
+      saveState();
+      renderFinance();
+    }
+
+    function setDayRating(rating) {
+      state.currentDebrief.rating = rating;
+      updateRatingStarUI(rating);
+    }
+
+    function updateRatingStarUI(rating) {
+      const btns = document.querySelectorAll('#rating-stars button');
+      btns.forEach((btn, idx) => {
+        if (idx < rating) {
+          btn.className = "star-btn text-cyber-gold text-base transition-all";
+        } else {
+          btn.className = "star-btn text-cyber-muted hover:text-cyber-gold text-base transition-all";
+        }
+      });
+    }
+
+    function renderNightlyDebrief() {
+      if (!state.currentDebrief) {
+        state.currentDebrief = { rating: 4, wins: '', friction: '', gratitude: '' };
+      }
+      if (!state.debriefHistory) {
+        state.debriefHistory = [];
+      }
+
+      updateRatingStarUI(state.currentDebrief.rating || 4);
+      document.getElementById('debrief-wins').value = state.currentDebrief.wins || '';
+      document.getElementById('debrief-friction').value = state.currentDebrief.friction || '';
+      document.getElementById('debrief-gratitude').value = state.currentDebrief.gratitude || '';
+
+      document.getElementById('debrief-history-count').innerText = `${state.debriefHistory.length} entries in archive`;
+    }
+
+    function saveNightlyDebrief(event) {
+      const wins = document.getElementById('debrief-wins').value.trim();
+      const friction = document.getElementById('debrief-friction').value.trim();
+      const gratitude = document.getElementById('debrief-gratitude').value.trim();
+
+      state.currentDebrief = {
+        rating: state.currentDebrief.rating || 4,
+        wins: wins,
+        friction: friction,
+        gratitude: gratitude
+      };
+
+      const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+      const existingIdx = state.debriefHistory.findIndex(entry => entry.date === todayStr);
+      const entryData = {
+        date: todayStr,
+        timestamp: Date.now(),
+        rating: state.currentDebrief.rating,
+        wins: wins,
+        friction: friction,
+        gratitude: gratitude
+      };
+
+      if (existingIdx >= 0) {
+        state.debriefHistory[existingIdx] = entryData;
+      } else {
+        state.debriefHistory.unshift(entryData);
+        // Reward 100 XP for night debrief!
+        addXP(100, event);
+      }
+
+      saveState();
+      renderNightlyDebrief();
+      
+      if (window.confetti) {
+        confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+      }
+      alert("Nightly debrief saved & closed! (+100 XP awarded)");
+    }
+
+    function toggleDebriefHistoryModal() {
+      const modal = document.getElementById('debrief-history-modal');
+      const isHidden = modal.classList.contains('hidden');
+
+      if (isHidden) {
+        renderDebriefHistoryList();
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function renderDebriefHistoryList() {
+      const container = document.getElementById('debrief-history-list');
+      container.innerHTML = '';
+
+      if (!state.debriefHistory || state.debriefHistory.length === 0) {
+        container.innerHTML = `<p class="text-xs text-cyber-muted text-center py-6 font-mono">No past debriefs logged yet.</p>`;
+        return;
+      }
+
+      state.debriefHistory.forEach(entry => {
+        const card = document.createElement('div');
+        card.className = "bg-cyber-card p-4 rounded-xl border border-cyber-border/80 space-y-2 text-xs font-mono";
+        
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+          starsHtml += `<i class="fa-solid fa-star ${i <= entry.rating ? 'text-cyber-gold' : 'text-cyber-border'} text-[10px]"></i>`;
+        }
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between border-b border-cyber-border/60 pb-2">
+            <span class="font-bold text-cyber-cyan">${entry.date}</span>
+            <div class="flex items-center gap-1">${starsHtml}</div>
+          </div>
+          ${entry.wins ? `<div><span class="text-cyber-glow font-bold">Wins:</span> <span class="text-white">${entry.wins}</span></div>` : ''}
+          ${entry.friction ? `<div><span class="text-cyber-crimson font-bold">Friction:</span> <span class="text-white">${entry.friction}</span></div>` : ''}
+          ${entry.gratitude ? `<div><span class="text-cyber-cyan font-bold">Memory/Gratitude:</span> <span class="text-white">${entry.gratitude}</span></div>` : ''}
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function renderAAR() {
+      document.getElementById('aar-wins').value = state.aar.wins || '';
+      document.getElementById('aar-friction').value = state.aar.friction || '';
+      document.getElementById('aar-adjustments').value = state.aar.adjustments || '';
+    }
+
+    function saveAARNotes() {
+      state.aar.wins = document.getElementById('aar-wins').value;
+      state.aar.friction = document.getElementById('aar-friction').value;
+      state.aar.adjustments = document.getElementById('aar-adjustments').value;
+      saveState();
+      alert("Weekly After-Action Review saved.");
+    }
+
+    function openBackupModal() {
+      document.getElementById('backup-modal').classList.remove('hidden');
+    }
+    function closeBackupModal() {
+      document.getElementById('backup-modal').classList.add('hidden');
+    }
+
+    function exportDataJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `LOCKED_IN_v2_1_BACKUP_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importDataJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported && imported.user && imported.missions) {
+            state = imported;
+            saveState();
+            renderAll();
+            closeBackupModal();
+            alert("System restored successfully!");
+          } else {
+            alert("Invalid system JSON backup file.");
+          }
+        } catch (err) {
+          alert("Error parsing backup JSON file.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function triggerResetProtocol() {
+      document.getElementById('reset-modal').classList.remove('hidden');
+    }
+    function closeResetProtocol() {
+      document.getElementById('reset-modal').classList.add('hidden');
+    }
+
+    function checkResetProgress() {
+      const checkboxes = document.querySelectorAll('#reset-checklist input[type="checkbox"]');
+      const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+      document.getElementById('reset-status').innerText = `${checkedCount}/${checkboxes.length} Completed`;
+
+      const btn = document.getElementById('reset-finish-btn');
+      if (checkedCount === checkboxes.length) {
+        btn.disabled = false;
+        btn.className = "px-5 py-2.5 bg-cyber-glow text-black font-black rounded-xl text-xs transition-all shadow-neon-glow cursor-pointer";
+      } else {
+        btn.disabled = true;
+        btn.className = "px-5 py-2.5 bg-cyber-border text-cyber-muted font-bold rounded-xl text-xs transition-all opacity-50 cursor-not-allowed";
+      }
+    }
+
+    function finishResetProtocol() {
+      setLoadout('low');
+      closeResetProtocol();
+      alert("10-Minute Reset executed! Adaptive loadout switched to Low-Energy mode. Complete 1 micro-win next!");
+    }
+
+    function resetAllDataConfirmation() {
+      if (confirm("Are you sure you want to purge all system data? This will reset all level, streak, and transaction history.")) {
+        localStorage.removeItem('locked_in_state_v2_1');
+        state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+        saveState();
+        renderAll();
+      }
+    }
+
+    window.onload = function() {
+      loadState();
+    };
+  </script>
 </body>
 </html>
