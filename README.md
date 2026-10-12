@@ -1,38 +1,52 @@
-# LOCKED IN — Life OS
+# LOCKED IN — Life OS v2
 
-A tiny, offline-first personal gamification dashboard for building consistency across training, money, creative work, and actually enjoying life.
+A gritty, Fight Club-inspired, offline-first gamification dashboard for consistent progress across training, money, creative work, and real-life experiences.
 
-## Features
+## Version 2 features
 
-- Daily missions with XP rewards
-- Levels and rank titles
-- Current streak counter
-- XP by life domain: Body, Freedom, Craft, Life, Discipline
-- Weekly side quests: connection, adventure, pure joy
-- Editable income/savings/social budget checkpoint (GEL defaults are examples)
-- Weekly reflection checklist
+- Daily mission board with XP rewards
+- Adaptive difficulty: Standard, Low-energy, and Push-day loadouts
+- Missed-day reset protocol: a small 10-minute re-entry mission earns 10 XP; earned XP is never removed
+- Levels, ranks, current streak, and XP by life domain
+- Weekly side quests: connection, adventure, and pure joy
+- Money checkpoint with editable GEL income, savings, and weekly social budget
+- Weekly after-action review
 - Exportable JSON backup
-- Data stored locally in the browser using `localStorage`
-- Responsive layout and system light/dark theme
-- No dependencies, accounts, tracking, or network requests
+- Responsive, gritty industrial visual style with system light/dark support
+- No dependencies, account, analytics, or network requests
 
 ## Run locally
 
-Open `index.html` in a modern browser. Your progress is stored in that browser on that device.
+Open `index.html` in a modern browser. Progress is saved to that browser's `localStorage`.
 
 ## Publish with GitHub Pages
 
-1. Create a new GitHub repository, for example `locked-in-life`.
-2. Upload `index.html` and `README.md` to the repository root.
-3. In the repository, open **Settings → Pages**.
-4. Under build and deployment, choose **Deploy from a branch**.
-5. Choose the `main` branch and `/ (root)` folder, then save.
-6. Wait for GitHub Pages to finish deploying. The published URL will appear in the Pages settings.
+1. Create a repository named `locked-in-life` on GitHub.
+2. Upload `index.html`, `README.md`, and `.gitignore` to the repository root.
+3. Open **Settings → Pages**.
+4. Under **Build and deployment**, select **Deploy from a branch**.
+5. Choose branch `main` and folder `/ (root)`, then save.
+6. Wait for deployment. The public URL is shown in the Pages settings.
 
-## Important data note
+## Data and privacy
 
-This version stores progress in browser-local storage. It does **not** sync progress between browsers or devices. Use **Export backup** to save a JSON copy. Clearing site data or switching devices may otherwise make progress unavailable.
+All progress stays in local browser storage. It does not sync between browsers or devices. Export a JSON backup before switching devices or clearing browser data. Reset data clears the current browser's saved progress.
 
-## Customization
+## XP system
 
-The mission definitions, XP values, ranks, side quests, and review prompts live near the top of the `<script>` section in `index.html`.
+- Daily missions: 10–20 XP each
+- Weekly side quests: 25 XP each
+- Reset mission: 10 XP, once per day
+- Level threshold: 150 XP per level
+
+## Adaptive day types
+
+- **Standard:** do the useful version of the planned action.
+- **Low-energy:** use the minimum viable version; prioritize recovery.
+- **Push day:** optional extra focus only when sleep and recovery support it.
+
+The dashboard does not punish missed days by deleting XP or demanding compensatory workouts. The reset mission is a gentle way to restart.
+
+## Customize
+
+Mission names, XP, descriptions, domains, ranks, and side quests are defined in the script in `index.html`.

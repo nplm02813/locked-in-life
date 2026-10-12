@@ -3,326 +3,279 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#111311">
-<title>LOCKED IN — Life OS</title>
+<meta name="theme-color" content="#101110">
+<title>LOCKED IN — Life OS v2</title>
 <style>
 :root {
   color-scheme: light dark;
-  --bg: light-dark(#f1f0e9, #111311);
-  --panel: light-dark(#ffffff, #1a1d1a);
-  --panel-2: light-dark(#e7e8df, #232823);
-  --text: light-dark(#1d241e, #f0f1e9);
-  --muted: light-dark(#657066, #9da69c);
-  --line: light-dark(#d9ddd4, #333a33);
-  --accent: light-dark(#456b4d, #b6e27a);
-  --accent-ink: light-dark(#ffffff, #172011);
-  --warning: light-dark(#a75d35, #f2a16f);
-  --shadow: 0 10px 28px rgba(0,0,0,.08);
+  --bg: light-dark(#e9e7df, #101110);
+  --panel: light-dark(#f8f7f1, #181a18);
+  --panel2: light-dark(#deded5, #222522);
+  --text: light-dark(#20221f, #e9e8df);
+  --muted: light-dark(#686c63, #9a9d92);
+  --line: light-dark(#cbcfc4, #373a34);
+  --accent: light-dark(#a9442e, #e45a3f);
+  --accent2: light-dark(#3f4b3f, #b3c49a);
+  --accentInk: #fff8ef;
+  --danger: light-dark(#a12d2d, #ff8b77);
+  --shadow: 0 12px 32px rgba(0,0,0,.12);
 }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-button, input, select { font: inherit; }
-button { cursor: pointer; }
-#app { min-height: 100vh; background: var(--bg); }
-.shell { max-width: 1180px; margin: 0 auto; padding: 28px 20px 60px; }
-.topbar { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:26px; }
-.brand { display:flex; align-items:center; gap:12px; }
-.mark { width:42px; height:42px; display:grid; place-items:center; border-radius:12px; background:var(--accent); color:var(--accent-ink); font-weight:900; letter-spacing:-2px; }
-.eyebrow { text-transform:uppercase; letter-spacing:.16em; font-size:11px; color:var(--muted); font-weight:800; }
-h1 { font-size:18px; margin:2px 0 0; letter-spacing:.08em; }
-.top-actions { display:flex; gap:8px; align-items:center; }
-button, .button { border:1px solid var(--line); border-radius:10px; padding:10px 13px; background:var(--panel); color:var(--text); }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+button,input,select { font:inherit; }
+button { cursor:pointer; }
+#app { min-height:100vh; background:var(--bg); }
+.shell { max-width:1220px; margin:0 auto; padding:22px 18px 60px; }
+.topbar { display:flex; justify-content:space-between; align-items:center; gap:15px; padding-bottom:16px; border-bottom:2px solid var(--text); }
+.brand { display:flex; gap:12px; align-items:center; }
+.mark { display:grid; place-items:center; width:44px; height:44px; background:var(--accent); color:var(--accentInk); font-weight:1000; font-size:17px; transform:rotate(-3deg); box-shadow:4px 4px 0 var(--text); }
+.eyebrow { font-size:10px; text-transform:uppercase; letter-spacing:.17em; color:var(--muted); font-weight:900; }
+h1 { font-size:15px; letter-spacing:.1em; margin:4px 0 0; }
+.top-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+button { border:1px solid var(--line); background:var(--panel); color:var(--text); padding:10px 12px; border-radius:3px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; }
 button:hover { border-color:var(--accent); }
-button.primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:800; }
-button.small { padding:7px 10px; font-size:12px; }
-.hero { display:grid; grid-template-columns:1.5fr .8fr; gap:18px; margin-bottom:18px; }
-.hero-main { background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:28px; box-shadow:var(--shadow); position:relative; overflow:hidden; }
-.hero-main:after { content:""; position:absolute; width:230px; height:230px; border:1px solid var(--line); border-radius:50%; right:-75px; bottom:-125px; box-shadow:0 0 0 24px var(--panel), 0 0 0 25px var(--line), 0 0 0 50px var(--panel), 0 0 0 51px var(--line); opacity:.55; pointer-events:none; }
-.hero h2 { font-size:clamp(30px, 4vw, 48px); line-height:1.02; letter-spacing:-.055em; max-width:600px; margin:14px 0; position:relative; z-index:1; }
-.hero p { max-width:550px; color:var(--muted); line-height:1.55; margin-bottom:22px; position:relative; z-index:1; }
-.hero-main .primary { position:relative; z-index:1; }
-.stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.stat { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px; }
-.stat .num { font-size:30px; font-weight:850; letter-spacing:-.05em; margin:10px 0 3px; }
-.stat .label { color:var(--muted); font-size:12px; }
-.progress { height:7px; border-radius:20px; background:var(--panel-2); overflow:hidden; margin-top:12px; }
-.progress > span { display:block; height:100%; width:0; background:var(--accent); border-radius:20px; transition:width .2s; }
-.section-head { display:flex; justify-content:space-between; align-items:end; gap:12px; margin:28px 0 12px; }
-.section-head h3 { margin:0; font-size:18px; letter-spacing:-.025em; }
-.section-head p { margin:4px 0 0; color:var(--muted); font-size:13px; }
-.grid { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; align-items:start; }
-.card { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:20px; }
-.card h3 { margin:0 0 5px; font-size:17px; }
-.card-sub { color:var(--muted); font-size:13px; margin:0 0 16px; line-height:1.45; }
-.mission-list { display:grid; gap:9px; }
-.mission { display:flex; gap:12px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:12px; transition:background .15s; }
-.mission.done { background:color-mix(in srgb, var(--accent) 12%, var(--panel)); border-color:color-mix(in srgb, var(--accent) 50%, var(--line)); }
-.mission input { accent-color:var(--accent); width:18px; height:18px; margin:2px 0 0; flex:0 0 auto; }
+button.primary { background:var(--accent); color:var(--accentInk); border-color:var(--accent); box-shadow:3px 3px 0 var(--text); }
+button.small { padding:8px 10px; }
+.hero { display:grid; grid-template-columns:1.4fr .9fr; gap:16px; margin:20px 0 22px; }
+.hero-main { background:var(--panel); border:1px solid var(--line); padding:25px; position:relative; overflow:hidden; box-shadow:var(--shadow); }
+.hero-main:after { content:"NO ZERO DAYS"; position:absolute; right:-14px; bottom:5px; font-size:clamp(24px,4vw,54px); font-weight:1000; letter-spacing:-.09em; color:var(--panel2); transform:rotate(-7deg); white-space:nowrap; pointer-events:none; }
+.hero-main h2 { position:relative; z-index:1; font-size:clamp(32px,5vw,56px); line-height:.98; letter-spacing:-.09em; margin:16px 0; max-width:650px; text-transform:uppercase; }
+.hero-main p { position:relative; z-index:1; max-width:570px; color:var(--muted); font-size:13px; line-height:1.7; }
+.hero-main .primary { position:relative; z-index:1; margin-top:9px; }
+.stats { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+.stat { border:1px solid var(--line); background:var(--panel); padding:15px; min-height:114px; }
+.num { font-size:31px; letter-spacing:-.09em; font-weight:1000; margin:11px 0 3px; }
+.label { font-size:10px; color:var(--muted); }
+.progress { height:5px; background:var(--panel2); margin-top:12px; overflow:hidden; }
+.progress span { display:block; height:100%; width:0; background:var(--accent); transition:width .2s; }
+.section-head { display:flex; justify-content:space-between; align-items:end; gap:12px; margin:28px 0 11px; }
+.section-head h3 { margin:0; font-size:16px; letter-spacing:-.04em; text-transform:uppercase; }
+.section-head p { margin:5px 0 0; font-size:11px; line-height:1.5; color:var(--muted); }
+.grid { display:grid; grid-template-columns:1.15fr .85fr; gap:16px; align-items:start; }
+.card { background:var(--panel); border:1px solid var(--line); padding:18px; box-shadow:0 5px 0 color-mix(in srgb,var(--text) 10%,transparent); }
+.card h3 { margin:0 0 6px; font-size:14px; text-transform:uppercase; letter-spacing:.03em; }
+.card-sub { margin:0 0 15px; font-size:11px; color:var(--muted); line-height:1.6; }
+.mission-list { display:grid; gap:8px; }
+.mission { display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); padding:12px; background:var(--bg); }
+.mission.done { border-color:var(--accent2); background:color-mix(in srgb,var(--accent2) 12%,var(--bg)); }
+.mission input { accent-color:var(--accent); width:17px; height:17px; margin:2px 0 0; flex-shrink:0; }
 .mission-copy { flex:1; }
-.mission-title { font-weight:750; font-size:14px; }
-.mission-desc { color:var(--muted); font-size:12px; line-height:1.4; margin-top:3px; }
-.xp { color:var(--accent); font-weight:850; white-space:nowrap; font-size:12px; }
+.mission-title { font-size:12px; font-weight:1000; text-transform:uppercase; }
+.mission-desc { font-size:10px; color:var(--muted); line-height:1.5; margin-top:4px; }
+.xp { color:var(--accent); font-size:10px; font-weight:1000; white-space:nowrap; }
 .domain-list { display:grid; gap:14px; }
-.domain-row { display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; }
-.domain-row strong { font-size:13px; }
-.domain-row span { color:var(--muted); font-size:12px; }
+.domain-row { display:grid; grid-template-columns:1fr auto; gap:6px; }
+.domain-row strong { font-size:11px; text-transform:uppercase; }
+.domain-row span { color:var(--muted); font-size:10px; }
 .domain-row .progress { grid-column:1 / -1; margin-top:0; }
-.challenge-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-.challenge { border:1px solid var(--line); border-radius:12px; padding:13px; }
+.challenge-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; }
+.challenge { border:1px solid var(--line); padding:13px; background:var(--bg); }
 .challenge .emoji { font-size:20px; }
-.challenge strong { display:block; font-size:13px; margin:7px 0 4px; }
-.challenge p { margin:0; font-size:12px; line-height:1.4; color:var(--muted); }
-.challenge .toggle { margin-top:11px; width:100%; font-size:12px; padding:8px; }
-.money-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.challenge strong { display:block; font-size:11px; margin:8px 0 5px; text-transform:uppercase; }
+.challenge p { color:var(--muted); font-size:10px; line-height:1.55; min-height:46px; margin:0; }
+.challenge button { width:100%; margin-top:10px; font-size:9px; padding:8px 5px; }
+.fields { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; }
 .field { display:grid; gap:6px; }
-.field label { font-size:12px; color:var(--muted); font-weight:700; }
-input[type="number"], input[type="text"], input[type="date"], select { width:100%; padding:11px 12px; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:10px; }
-.money-summary { background:var(--panel-2); border-radius:12px; padding:14px; margin-top:12px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.field label { font-size:10px; color:var(--muted); font-weight:900; }
+input[type="number"] { width:100%; padding:10px; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:0; }
+.money-summary { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:13px; background:var(--panel2); margin-top:12px; }
 .money-summary strong { font-size:20px; }
-.money-summary small { color:var(--muted); display:block; margin-top:3px; }
+.money-summary small { color:var(--muted); font-size:10px; display:block; margin-top:4px; }
 .review-list { display:grid; gap:10px; }
-.review-item { display:flex; gap:10px; align-items:flex-start; font-size:13px; line-height:1.45; }
-.review-item input { accent-color:var(--accent); margin-top:3px; }
-.quote { border-left:3px solid var(--accent); padding:12px 0 12px 15px; margin-top:16px; color:var(--muted); line-height:1.6; font-size:13px; }
-.footer { margin-top:28px; color:var(--muted); font-size:12px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-.toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--text); color:var(--bg); border-radius:999px; padding:11px 16px; font-size:13px; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity .2s; }
+.review-item { display:flex; gap:9px; font-size:11px; line-height:1.5; align-items:flex-start; }
+.review-item input { accent-color:var(--accent); margin-top:2px; }
+.quote { border-left:3px solid var(--accent); padding:10px 0 10px 13px; margin-top:15px; font-size:11px; line-height:1.7; color:var(--muted); }
+.protocol { border:1px solid var(--accent); background:color-mix(in srgb,var(--accent) 8%,var(--panel)); padding:14px; margin-top:12px; }
+.protocol strong { font-size:11px; text-transform:uppercase; }
+.protocol p { color:var(--muted); font-size:11px; line-height:1.65; margin:7px 0 0; }
+.footer { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:26px; padding-top:12px; border-top:1px solid var(--line); color:var(--muted); font-size:9px; letter-spacing:.04em; }
+.toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--text); color:var(--bg); padding:11px 15px; font-size:11px; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity .2s; max-width:90vw; text-align:center; z-index:5; }
 .toast.show { opacity:1; }
-@media (max-width:800px) { .hero,.grid { grid-template-columns:1fr; } .hero-main { padding:22px; } .challenge-grid { grid-template-columns:1fr; } .shell { padding:18px 13px 40px; } .stats { grid-template-columns:repeat(2,1fr); } .topbar { align-items:flex-start; } .top-actions { flex-wrap:wrap; justify-content:flex-end; } }
-@media (max-width:430px) { .stats { grid-template-columns:1fr 1fr; gap:8px; } .stat { padding:13px; } .stat .num { font-size:25px; } .money-row { grid-template-columns:1fr; } .hero h2 { font-size:34px; } }
+@media(max-width:820px) { .hero,.grid { grid-template-columns:1fr; } .challenge-grid { grid-template-columns:1fr; } .challenge p { min-height:0; } .fields { grid-template-columns:1fr 1fr; } }
+@media(max-width:500px) { .shell { padding:14px 10px 38px; } .topbar { align-items:flex-start; } .top-actions { max-width:145px; } .hero-main { padding:19px; } .hero-main h2 { font-size:38px; } .stats { gap:7px; } .stat { padding:11px; min-height:100px; } .num { font-size:26px; } .section-head { align-items:flex-start; flex-direction:column; } .fields { grid-template-columns:1fr 1fr; } }
 </style>
 </head>
 <body>
 <div id="app">
-  <main class="shell">
-    <header class="topbar">
-      <div class="brand">
-        <div class="mark">LI</div>
-        <div><div class="eyebrow">Personal operating system</div><h1>LOCKED IN / LIFE OS</h1></div>
-      </div>
-      <div class="top-actions">
-        <button id="exportBtn" class="small">Export backup</button>
-        <button id="resetBtn" class="small">Reset data</button>
-      </div>
-    </header>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand"><div class="mark">LI//</div><div><div class="eyebrow">Personal field system / v2</div><h1>LOCKED IN — LIFE OS</h1></div></div>
+    <div class="top-actions"><button class="small" id="exportBtn">Export backup</button><button class="small" id="resetBtn">Reset data</button></div>
+  </header>
 
-    <section class="hero">
-      <div class="hero-main">
-        <div class="eyebrow" id="todayLabel">YOUR DAY, YOUR CALL</div>
-        <h2>Build a life you<br>don't need to escape.</h2>
-        <p>Stack small wins. Build your body, your freedom, your craft, and a life worth remembering. No perfection required — just return to the path.</p>
-        <button class="primary" id="focusBtn">Start today's run ↗</button>
-      </div>
-      <div class="stats">
-        <div class="stat"><div class="eyebrow">Total XP</div><div class="num" id="totalXp">0</div><div class="label">Experience earned</div></div>
-        <div class="stat"><div class="eyebrow">Level</div><div class="num" id="level">01</div><div class="label" id="rank">The Starter</div><div class="progress"><span id="levelBar"></span></div></div>
-        <div class="stat"><div class="eyebrow">Current streak</div><div class="num" id="streak">0 <span style="font-size:14px">days</span></div><div class="label">One meaningful win per day</div></div>
-        <div class="stat"><div class="eyebrow">Today</div><div class="num" id="todayCount">0/6</div><div class="label">Daily missions complete</div><div class="progress"><span id="todayBar"></span></div></div>
-      </div>
-    </section>
-
-    <div class="section-head">
-      <div><h3>Today's missions</h3><p>Choose the actions that move your life forward. Earn XP when you complete them.</p></div>
-      <div class="eyebrow" id="dateStamp"></div>
+  <section class="hero">
+    <div class="hero-main">
+      <div class="eyebrow" id="todayLabel">FIELD REPORT / TODAY</div>
+      <h2>Build the life.<br>Don't escape it.</h2>
+      <p>Adaptive standards. No perfection theater. Train your body, build your freedom, sharpen your craft, and stay present for the actual experience of being alive.</p>
+      <button class="primary" id="focusBtn">Begin today's run ↗</button>
     </div>
-    <section class="grid">
-      <div class="card">
-        <h3>Daily run</h3>
-        <p class="card-sub">A balanced day beats a perfect day you can only repeat once.</p>
-        <div class="mission-list" id="missions"></div>
-        <div class="quote">“Discipline gives you options. Courage lets you use them. Being present lets you enjoy them.”</div>
-      </div>
-      <div class="card">
-        <h3>Your character build</h3>
-        <p class="card-sub">XP by domain. Keep developing the whole character, not just one stat.</p>
-        <div class="domain-list" id="domains"></div>
-      </div>
-    </section>
-
-    <div class="section-head">
-      <div><h3>Weekly side quests</h3><p>Make sure your life includes real experiences, not just productivity.</p></div>
+    <div class="stats">
+      <div class="stat"><div class="eyebrow">Total XP</div><div class="num" id="totalXp">0</div><div class="label">Experience banked</div></div>
+      <div class="stat"><div class="eyebrow">Level</div><div class="num" id="level">01</div><div class="label" id="rank">Recruit</div><div class="progress"><span id="levelBar"></span></div></div>
+      <div class="stat"><div class="eyebrow">Active streak</div><div class="num" id="streak">0 <small>days</small></div><div class="label">One mission or reset per day</div></div>
+      <div class="stat"><div class="eyebrow">Today's run</div><div class="num" id="todayCount">0/6</div><div class="label">Missions completed</div><div class="progress"><span id="todayBar"></span></div></div>
     </div>
-    <section class="card">
-      <div class="challenge-grid" id="challenges"></div>
-    </section>
+  </section>
 
-    <div class="section-head">
-      <div><h3>Money checkpoint</h3><p>Awareness first. Make the money serve the life you want.</p></div>
+  <div class="section-head"><div><h3>01 / Daily mission board</h3><p>Choose a realistic loadout based on energy and schedule. A small win counts.</p></div><div class="eyebrow" id="dateStamp"></div></div>
+  <section class="grid">
+    <div class="card">
+      <h3>Today's loadout</h3><p class="card-sub">Adaptive difficulty: choose your day type. XP rewards stay the same; the required effort changes.</p>
+      <div class="field" style="margin-bottom:12px"><label for="dayMode">MISSION INTENSITY</label><select id="dayMode" style="padding:10px;background:var(--bg);color:var(--text);border:1px solid var(--line)"><option value="standard">Standard day — normal plan</option><option value="low">Low-energy day — minimum viable wins</option><option value="push">Push day — extra focus, only if recovered</option></select></div>
+      <div class="protocol" id="modeProtocol"><strong>STANDARD ORDERS</strong><p>Complete a useful version of each mission. You do not need to max out every stat every day.</p></div>
+      <div class="mission-list" id="missions" style="margin-top:12px"></div>
+      <div class="quote">“You are allowed to have a hard day. You are not required to turn it into a hard week.”</div>
     </div>
-    <section class="card">
-      <div class="money-row">
-        <div class="field"><label for="income">Monthly income target / GEL</label><input id="income" type="number" min="0" step="50" value="3000"></div>
-        <div class="field"><label for="savings">Savings moved this month / GEL</label><input id="savings" type="number" min="0" step="10" value="150"></div>
-        <div class="field"><label for="weeklyBudget">Weekly social budget / GEL</label><input id="weeklyBudget" type="number" min="0" step="10" value="80"></div>
-        <div class="field"><label for="socialSpent">Social spending this week / GEL</label><input id="socialSpent" type="number" min="0" step="5" value="0"></div>
-      </div>
-      <div class="money-summary"><div><div class="eyebrow">Social budget remaining</div><small id="budgetHint">Set a budget you can afford after essentials.</small></div><strong id="budgetRemaining">80 GEL</strong></div>
-      <p class="card-sub" style="margin:12px 0 0">These are planning numbers, not financial advice. Adjust them to your real bills and obligations. The goal is control, not shame.</p>
-    </section>
-
-    <div class="section-head">
-      <div><h3>Weekly review</h3><p>Every week, check in honestly. This is a compass, not a courtroom.</p></div>
-      <button id="reviewReset" class="small">New week</button>
+    <div class="card">
+      <h3>Character stats</h3><p class="card-sub">Track the whole build. Every mission is one of five domains.</p>
+      <div class="domain-list" id="domains"></div>
+      <div class="protocol"><strong>Field rule / 01</strong><p>Discipline is keeping a promise that fits reality. If work, sleep, or recovery changes, adapt the mission — don't abandon the campaign.</p></div>
     </div>
-    <section class="card">
-      <div class="review-list" id="review"></div>
-      <div class="quote">Ask yourself: Did I do something for my future? Did I do something that made life worth living today? What is the next useful step?</div>
-    </section>
+  </section>
 
-    <footer class="footer"><span>LOCKED IN / LIFE OS · v1.0</span><span>Your data stays in this browser. Export a backup before changing devices.</span></footer>
-  </main>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="section-head"><div><h3>02 / Weekly side quests</h3><p>Productivity isn't the whole game. Make memories on purpose.</p></div></div>
+  <section class="card"><div class="challenge-grid" id="challenges"></div></section>
+
+  <div class="section-head"><div><h3>03 / Money checkpoint</h3><p>Money is stored energy for your future choices. Track it without shame.</p></div></div>
+  <section class="card">
+    <div class="fields">
+      <div class="field"><label for="income">MONTHLY INCOME / GEL</label><input id="income" type="number" min="0" step="50" value="3000"></div>
+      <div class="field"><label for="savings">SAVED THIS MONTH / GEL</label><input id="savings" type="number" min="0" step="10" value="150"></div>
+      <div class="field"><label for="weeklyBudget">WEEKLY SOCIAL LIMIT / GEL</label><input id="weeklyBudget" type="number" min="0" step="10" value="80"></div>
+      <div class="field"><label for="socialSpent">SPENT THIS WEEK / GEL</label><input id="socialSpent" type="number" min="0" step="5" value="0"></div>
+    </div>
+    <div class="money-summary"><div><div class="eyebrow">Social budget remaining</div><small id="budgetHint">Set a limit after essentials and obligations.</small></div><strong id="budgetRemaining">80 GEL</strong></div>
+    <p class="card-sub" style="margin:11px 0 0">Defaults are examples, not advice. Set a realistic amount after essentials, debt, and obligations. A budget should create options, not guilt.</p>
+  </section>
+
+  <div class="section-head"><div><h3>04 / Missed-day reset protocol</h3><p>No shame spiral. No pretending it didn't happen. Return with one deliberate action.</p></div></div>
+  <section class="card">
+    <h3 id="resetTitle">No missed day detected</h3>
+    <p class="card-sub" id="resetDesc">If yesterday had no completed mission, use this short reset to re-enter the game. Your earned XP is never removed.</p>
+    <div class="protocol"><strong>THE 10-MINUTE RESET</strong><p>1. Drink water and take five slow breaths. 2. Tidy one small area or take a short walk. 3. Choose the single next useful action. 4. Complete the reset mission below. Then continue normally — no punishment workout, no extreme restriction, no doubling tomorrow's workload.</p></div>
+    <button class="primary" id="resetMissionBtn" style="margin-top:12px">Complete reset mission · +10 XP</button>
+  </section>
+
+  <div class="section-head"><div><h3>05 / Weekly after-action review</h3><p>Honest debrief. Keep what works. Change what doesn't.</p></div><button class="small" id="reviewReset">Clear review</button></div>
+  <section class="card"><div class="review-list" id="review"></div><div class="quote">Debrief questions: Did I build my future? Did I actually enjoy my life? What stole time or money? What's the next useful move?</div></section>
+
+  <footer class="footer"><span>LOCKED IN / LIFE OS v2.0</span><span>Local-only data · Export backups regularly · Not a replacement for professional advice</span></footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 </div>
 <script>
 (() => {
-  const STORE = "locked-in-life-os-v1";
+  const STORE = "locked-in-life-os-v2";
   const missions = [
-    { id:"body", title:"Move your body", desc:"Train, do mobility, walk, or practice dance — match the effort to your recovery.", xp:20, domain:"Body" },
-    { id:"future", title:"Invest in your future", desc:"One focused block on career, editing, portfolio, or a useful skill.", xp:20, domain:"Freedom" },
-    { id:"money", title:"Make one money-smart choice", desc:"Track spending, save, cook instead of buying out, or avoid an impulse purchase.", xp:15, domain:"Freedom" },
-    { id:"craft", title:"Practice your craft", desc:"Coffee, filmmaking, color grading, photography, or another skill you care about.", xp:15, domain:"Craft" },
-    { id:"alive", title:"Do something that makes life feel alive", desc:"Connect, explore, create, read, dance, or spend time outdoors.", xp:20, domain:"Life" },
-    { id:"reset", title:"Close the day deliberately", desc:"Plan tomorrow, put the phone down, and protect your sleep.", xp:10, domain:"Discipline" }
+    {id:"body", title:"Move your body", desc:{standard:"Training, mobility, a walk, or dance practice matched to your plan.",low:"Five minutes of mobility or a short walk. Minimum viable movement.",push:"Complete the planned session only if sleep and recovery support it."},xp:20,domain:"Body"},
+    {id:"future",title:"Invest in future freedom",desc:{standard:"Focused work on career, freelance outreach, portfolio, or a valuable skill.",low:"Ten focused minutes on one next step.",push:"A 45–60 minute deep-work block with distractions off."},xp:20,domain:"Freedom"},
+    {id:"money",title:"Make one money-smart choice",desc:{standard:"Track spending, save, cook in, or pause an impulse purchase.",low:"Record today's spending — no judgment.",push:"Review the week's expenses and take one concrete savings action."},xp:15,domain:"Freedom"},
+    {id:"craft",title:"Sharpen your craft",desc:{standard:"Coffee, filming, color grading, photography, or another meaningful skill.",low:"Practice or study for ten minutes.",push:"Finish a defined deliverable or publishable improvement."},xp:15,domain:"Craft"},
+    {id:"alive",title:"Experience your actual life",desc:{standard:"Connect, explore, create, read, dance, or spend time outdoors.",low:"Step outside, message a friend, or do one thing you enjoy.",push:"Plan or do a memorable experience without wrecking tomorrow."},xp:20,domain:"Life"},
+    {id:"close",title:"Close the day deliberately",desc:{standard:"Choose tomorrow's priority and protect your sleep.",low:"Write one next step and start winding down.",push:"Review the day, prepare tomorrow, and set a firm sleep cutoff."},xp:10,domain:"Discipline"}
   ];
-  const domains = ["Body","Freedom","Craft","Life","Discipline"];
-  const challenges = [
-    { id:"connection", emoji:"✳", title:"One connection", desc:"See a friend, have a real conversation, or meet someone new." },
-    { id:"adventure", emoji:"↗", title:"One adventure", desc:"Explore somewhere, take your camera, hike, or try something new." },
-    { id:"joy", emoji:"♫", title:"One pure joy", desc:"Dance, enjoy a film, make coffee, read, or do something just because." }
+  const domains=["Body","Freedom","Craft","Life","Discipline"];
+  const challenges=[
+    {id:"connection",emoji:"✳",title:"One connection",desc:"See a friend, have a real conversation, or meet someone new."},
+    {id:"adventure",emoji:"↗",title:"One adventure",desc:"Explore a new place, take your camera, hike, or try something unfamiliar."},
+    {id:"joy",emoji:"♫",title:"One pure joy",desc:"Dance, enjoy a film, make coffee, read, or do something just because."}
   ];
-  const reviewItems = [
+  const reviewItems=[
     "I made measurable progress toward my future.",
     "I did something enjoyable without sabotaging tomorrow.",
-    "I stayed aware of my spending and honored my budget.",
+    "I stayed aware of spending and made intentional choices.",
     "I connected with someone or created a memory.",
-    "I reviewed what worked and chose one next step."
+    "I adapted the plan when reality changed instead of quitting.",
+    "I identified one thing to improve next week."
   ];
-  const today = () => new Date().toLocaleDateString("en-CA");
-  const weekKey = (date = new Date()) => {
-    const d = new Date(date); d.setHours(0,0,0,0);
-    d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
-    return d.toLocaleDateString("en-CA");
-  };
-  const blank = () => ({
-    startedAt: today(), days:{}, weekly:{}, review:{}, money:{ income:3000, savings:150, weeklyBudget:80, socialSpent:0, week:weekKey() }
-  });
+  const today=()=>new Date().toLocaleDateString("en-CA");
+  const weekKey=(date=new Date())=>{const d=new Date(date);d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toLocaleDateString("en-CA");};
+  const yesterday=()=>{const d=new Date();d.setDate(d.getDate()-1);return d.toLocaleDateString("en-CA");};
+  const blank=()=>({days:{},weekly:{},review:{},money:{income:3000,savings:150,weeklyBudget:80,socialSpent:0,week:weekKey()},dayMode:"standard"});
   let state;
-  try { state = JSON.parse(localStorage.getItem(STORE)) || blank(); } catch { state = blank(); }
-  if (!state.days) state.days = {};
-  if (!state.weekly) state.weekly = {};
-  if (!state.review) state.review = {};
-  if (!state.money) state.money = blank().money;
-  if (state.money.week !== weekKey()) { state.money.week = weekKey(); state.money.socialSpent = 0; }
-  const save = () => localStorage.setItem(STORE, JSON.stringify(state));
-  const dayData = (key = today()) => state.days[key] || (state.days[key] = { done:[] });
-  const weekData = () => state.weekly[weekKey()] || (state.weekly[weekKey()] = { done:[] });
-  const reviewData = () => state.review[weekKey()] || (state.review[weekKey()] = []);
-  const totalXP = () => Object.entries(state.days).reduce((sum, [date, data]) => sum + missions.filter(m => (data.done || []).includes(m.id)).reduce((s,m)=>s+m.xp,0), 0);
-  const xpByDomain = domain => Object.entries(state.days).reduce((sum, [date, data]) => sum + missions.filter(m => m.domain===domain && (data.done||[]).includes(m.id)).reduce((s,m)=>s+m.xp,0),0);
-  const levelInfo = xp => {
-    const level = Math.floor(xp / 150) + 1;
-    const within = xp % 150;
-    const names = ["The Starter","The Builder","The Operator","The Explorer","The Specialist","The Force","The Architect","The Free Agent","The Master"];
-    return { level, within, rank:names[Math.min(level-1,names.length-1)] || "Legend in Progress" };
-  };
-  function streak() {
-    let count=0, d=new Date();
-    const hasWin = date => {
-      const key = date.toLocaleDateString("en-CA");
-      const data = state.days[key];
-      return !!data && (data.done||[]).length > 0;
+  try{state=JSON.parse(localStorage.getItem(STORE))||blank();}catch{state=blank();}
+  state.days ||= {}; state.weekly ||= {}; state.review ||= {}; state.money ||= blank().money; state.dayMode ||= "standard";
+  if(state.money.week!==weekKey()){state.money.week=weekKey();state.money.socialSpent=0;}
+  const save=()=>localStorage.setItem(STORE,JSON.stringify(state));
+  const dayData=(key=today())=>state.days[key]||(state.days[key]={done:[],reset:false});
+  const weekData=()=>state.weekly[weekKey()]||(state.weekly[weekKey()]={done:[]});
+  const reviewData=()=>state.review[weekKey()]||(state.review[weekKey()]=[]);
+  const dailyXP=()=>Object.values(state.days).reduce((sum,d)=>sum+missions.filter(m=>(d.done||[]).includes(m.id)).reduce((s,m)=>s+m.xp,0)+(d.reset?10:0),0);
+  const sideXP=()=>Object.values(state.weekly).reduce((sum,w)=>sum+(w.done||[]).length*25,0);
+  const totalXP=()=>dailyXP()+sideXP();
+  const domainXP=domain=>Object.values(state.days).reduce((sum,d)=>sum+missions.filter(m=>m.domain===domain&&(d.done||[]).includes(m.id)).reduce((s,m)=>s+m.xp,0),0);
+  const levelInfo=xp=>{const level=Math.floor(xp/150)+1;const ranks=["Recruit","Runner","Operator","Pathfinder","Specialist","Enforcer","Architect","Free Agent","Iron Mind"];return {level,within:xp%150,rank:ranks[Math.min(level-1,ranks.length-1)]||"Legend in Progress"};};
+  function hasWin(key){const d=state.days[key];return !!d&&((d.done||[]).length>0||d.reset===true);}
+  function streak(){let d=new Date(),count=0;if(!hasWin(today()))d.setDate(d.getDate()-1);while(hasWin(d.toLocaleDateString("en-CA"))){count++;d.setDate(d.getDate()-1);if(count>500)break;}return count;}
+  function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1900);}
+  function renderMissions(){
+    const d=dayData(),mode=state.dayMode;
+    const protocols={
+      standard:["STANDARD ORDERS","Complete a useful version of each mission. You do not need to max out every stat every day."],
+      low:["LOW-ENERGY PROTOCOL","Protect the streak of showing up, not the illusion of being superhuman. Small versions count; prioritize recovery."],
+      push:["PUSH-DAY PROTOCOL","Use this only when you're rested. Extra effort is optional, never a debt you owe after a missed day."]
     };
-    if (!hasWin(d)) d.setDate(d.getDate()-1);
-    while (hasWin(d)) { count++; d.setDate(d.getDate()-1); if(count>500)break; }
-    return count;
-  }
-  function toast(msg) {
-    const el = document.getElementById("toast"); el.textContent=msg; el.classList.add("show");
-    setTimeout(()=>el.classList.remove("show"),1800);
-  }
-  function renderMissions() {
-    const data = dayData();
-    document.getElementById("missions").innerHTML = missions.map(m => {
-      const done = data.done.includes(m.id);
-      return `<label class="mission ${done?'done':''}"><input type="checkbox" data-mission="${m.id}" ${done?'checked':''}><div class="mission-copy"><div class="mission-title">${m.title}</div><div class="mission-desc">${m.desc}</div></div><div class="xp">+${m.xp} XP</div></label>`;
-    }).join("");
-    document.querySelectorAll("[data-mission]").forEach(input => input.addEventListener("change", e => {
-      const m = missions.find(x=>x.id===e.target.dataset.mission), d=dayData();
-      if(e.target.checked) { if(!d.done.includes(m.id)) d.done.push(m.id); toast(`+${m.xp} XP · ${m.domain}`); }
-      else d.done=d.done.filter(id=>id!==m.id);
-      save(); render();
+    document.getElementById("modeProtocol").innerHTML=`<strong>${protocols[mode][0]}</strong><p>${protocols[mode][1]}</p>`;
+    document.getElementById("missions").innerHTML=missions.map(m=>`<label class="mission ${d.done.includes(m.id)?'done':''}"><input type="checkbox" data-mission="${m.id}" ${d.done.includes(m.id)?'checked':''}><div class="mission-copy"><div class="mission-title">${m.title}</div><div class="mission-desc">${m.desc[mode]}</div></div><div class="xp">+${m.xp} XP</div></label>`).join("");
+    document.querySelectorAll("[data-mission]").forEach(el=>el.addEventListener("change",()=>{
+      const id=el.dataset.mission,day=dayData(),m=missions.find(x=>x.id===id);
+      if(el.checked){if(!day.done.includes(id))day.done.push(id);toast(`+${m.xp} XP / ${m.domain}`);}else day.done=day.done.filter(x=>x!==id);
+      save();render();
     }));
   }
-  function renderDomains() {
-    const max = Math.max(100, ...domains.map(x=>xpByDomain(x)));
-    document.getElementById("domains").innerHTML = domains.map(d=>{
-      const xp=xpByDomain(d);
-      return `<div class="domain-row"><strong>${d}</strong><span>${xp} XP</span><div class="progress"><span style="width:${Math.min(100,xp/max*100)}%"></span></div></div>`;
-    }).join("");
+  function renderDomains(){
+    const max=Math.max(100,...domains.map(domainXP));
+    document.getElementById("domains").innerHTML=domains.map(d=>{const xp=domainXP(d);return `<div class="domain-row"><strong>${d}</strong><span>${xp} XP</span><div class="progress"><span style="width:${Math.min(100,xp/max*100)}%"></span></div></div>`;}).join("");
   }
-  function renderChallenges() {
-    const data=weekData();
-    document.getElementById("challenges").innerHTML=challenges.map(c=>{
-      const done=data.done.includes(c.id);
-      return `<div class="challenge"><div class="emoji">${c.emoji}</div><strong>${c.title}</strong><p>${c.desc}</p><button class="toggle ${done?'primary':''}" data-challenge="${c.id}">${done?'✓ Completed':'Mark complete · +25 XP'}</button></div>`;
-    }).join("");
-    document.querySelectorAll("[data-challenge]").forEach(btn=>btn.addEventListener("click",()=>{
-      const d=weekData(), id=btn.dataset.challenge;
-      if(d.done.includes(id)) d.done=d.done.filter(x=>x!==id); else {d.done.push(id); toast("+25 XP · Side quest");}
-      save(); render();
-    }));
+  function renderChallenges(){
+    const d=weekData();
+    document.getElementById("challenges").innerHTML=challenges.map(c=>`<div class="challenge"><div class="emoji">${c.emoji}</div><strong>${c.title}</strong><p>${c.desc}</p><button class="${d.done.includes(c.id)?'primary':''}" data-challenge="${c.id}">${d.done.includes(c.id)?'✓ Completed':'Mark complete / +25 XP'}</button></div>`).join("");
+    document.querySelectorAll("[data-challenge]").forEach(el=>el.addEventListener("click",()=>{const w=weekData(),id=el.dataset.challenge;if(w.done.includes(id))w.done=w.done.filter(x=>x!==id);else{w.done.push(id);toast("+25 XP / side quest complete");}save();render();}));
   }
-  function renderReview() {
+  function renderMoney(){
+    const m=state.money;
+    ["income","savings","weeklyBudget","socialSpent"].forEach(id=>{const el=document.getElementById(id);if(document.activeElement!==el)el.value=m[id]??0;});
+    const remaining=Number(m.weeklyBudget||0)-Number(m.socialSpent||0);
+    document.getElementById("budgetRemaining").textContent=`${remaining.toLocaleString()} GEL`;
+    document.getElementById("budgetHint").textContent=remaining>=0?"Within your planned limit. Keep choosing intentionally.":"Over budget. Adjust the rest of the week without beating yourself up.";
+    document.getElementById("budgetRemaining").style.color=remaining<0?"var(--danger)":"var(--text)";
+  }
+  function renderReview(){
     const done=reviewData();
     document.getElementById("review").innerHTML=reviewItems.map((item,i)=>`<label class="review-item"><input type="checkbox" data-review="${i}" ${done.includes(i)?'checked':''}><span>${item}</span></label>`).join("");
-    document.querySelectorAll("[data-review]").forEach(el=>el.addEventListener("change",()=>{
-      const arr=reviewData(), i=Number(el.dataset.review);
-      if(el.checked){if(!arr.includes(i))arr.push(i);} else state.review[weekKey()]=arr.filter(x=>x!==i);
-      save(); render();
-    }));
+    document.querySelectorAll("[data-review]").forEach(el=>el.addEventListener("change",()=>{const arr=reviewData(),i=Number(el.dataset.review);if(el.checked){if(!arr.includes(i))arr.push(i);}else state.review[weekKey()]=arr.filter(x=>x!==i);save();renderReview();}));
   }
-  function renderMoney() {
-    const m=state.money;
-    for(const id of ["income","savings","weeklyBudget","socialSpent"]) {
-      const el=document.getElementById(id); if(document.activeElement!==el) el.value=m[id] ?? 0;
-    }
-    const remain=Number(m.weeklyBudget||0)-Number(m.socialSpent||0);
-    document.getElementById("budgetRemaining").textContent=`${remain.toLocaleString()} GEL`;
-    document.getElementById("budgetHint").textContent=remain>=0?"You're within your planned social budget.":"Over budget — adjust the rest of the week without beating yourself up.";
-    document.getElementById("budgetRemaining").style.color=remain<0?"var(--warning)":"var(--text)";
+  function renderReset(){
+    const missed=!hasWin(yesterday()),d=dayData();
+    document.getElementById("resetTitle").textContent=missed?"Reset protocol available":"No missed day detected";
+    document.getElementById("resetDesc").textContent=missed?"Yesterday has no completed mission. No drama. Use a ten-minute reset to get moving again; yesterday's gap does not erase previous progress.":"You're not currently coming back from a blank day. Keep this protocol available for the next time life gets messy.";
+    const btn=document.getElementById("resetMissionBtn");
+    btn.disabled=!!d.reset;
+    btn.textContent=d.reset?"✓ Reset completed today":"Complete reset mission · +10 XP";
   }
-  function render() {
-    const xp=totalXP()+Object.keys(state.weekly).reduce((sum,k)=>sum+(state.weekly[k].done||[]).length*25,0);
-    const info=levelInfo(xp), done=dayData().done.length;
-    document.getElementById("todayLabel").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}).toUpperCase();
+  function render(){
+    const xp=totalXP(),info=levelInfo(xp),d=dayData(),done=d.done.length;
+    document.getElementById("todayLabel").textContent=new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}).toUpperCase()+" / FIELD REPORT";
     document.getElementById("dateStamp").textContent=today();
     document.getElementById("totalXp").textContent=xp;
     document.getElementById("level").textContent=String(info.level).padStart(2,"0");
     document.getElementById("rank").textContent=info.rank;
     document.getElementById("levelBar").style.width=(info.within/150*100)+"%";
-    document.getElementById("streak").innerHTML=`${streak()} <span style="font-size:14px">days</span>`;
+    document.getElementById("streak").innerHTML=`${streak()} <small style="font-size:10px">days</small>`;
     document.getElementById("todayCount").textContent=`${done}/${missions.length}`;
     document.getElementById("todayBar").style.width=(done/missions.length*100)+"%";
-    renderMissions(); renderDomains(); renderChallenges(); renderReview(); renderMoney();
+    document.getElementById("dayMode").value=state.dayMode;
+    renderMissions();renderDomains();renderChallenges();renderMoney();renderReview();renderReset();
   }
-  ["income","savings","weeklyBudget","socialSpent"].forEach(id=>document.getElementById(id).addEventListener("change",e=>{
-    state.money[id]=Math.max(0,Number(e.target.value)||0); save(); renderMoney();
-  }));
-  document.getElementById("focusBtn").addEventListener("click",()=>{
-    document.getElementById("missions").scrollIntoView({behavior:"smooth",block:"center"});
-    document.querySelector("#missions input:not(:checked)")?.focus({preventScroll:true});
-  });
-  document.getElementById("reviewReset").addEventListener("click",()=>{
-    if(confirm("Start a fresh weekly review? Your previous weeks stay saved.")){state.review[weekKey()]=[]; save(); renderReview(); toast("Fresh week, fresh start.");}
-  });
-  document.getElementById("exportBtn").addEventListener("click",()=>{
-    const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
-    const url=URL.createObjectURL(blob), a=document.createElement("a");
-    a.href=url; a.download="locked-in-backup.json"; a.click(); URL.revokeObjectURL(url); toast("Backup exported.");
-  });
-  document.getElementById("resetBtn").addEventListener("click",()=>{
-    if(confirm("This deletes all saved progress from this browser. Export a backup first if you want to keep it.")){state=blank(); save(); render(); toast("Fresh start.");}
-  });
-  save(); render();
+  document.getElementById("dayMode").addEventListener("change",e=>{state.dayMode=e.target.value;save();renderMissions();});
+  ["income","savings","weeklyBudget","socialSpent"].forEach(id=>document.getElementById(id).addEventListener("change",e=>{state.money[id]=Math.max(0,Number(e.target.value)||0);save();renderMoney();}));
+  document.getElementById("focusBtn").addEventListener("click",()=>{document.getElementById("missions").scrollIntoView({behavior:"smooth",block:"center"});document.querySelector("#missions input:not(:checked)")?.focus({preventScroll:true});});
+  document.getElementById("resetMissionBtn").addEventListener("click",()=>{const d=dayData();if(d.reset)return;d.reset=true;save();render();toast("+10 XP / reset protocol complete");});
+  document.getElementById("reviewReset").addEventListener("click",()=>{if(confirm("Clear this week's reflection checkboxes? Your missions and XP remain saved.")){state.review[weekKey()]=[];save();renderReview();toast("Review cleared.");}});
+  document.getElementById("exportBtn").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="locked-in-life-os-v2-backup.json";a.click();URL.revokeObjectURL(url);toast("Backup exported.");});
+  document.getElementById("resetBtn").addEventListener("click",()=>{if(confirm("This permanently clears progress saved in this browser. Export a backup first if needed.")){state=blank();save();render();toast("New campaign started.");}});
+  save();render();
 })();
 </script>
 </body>
